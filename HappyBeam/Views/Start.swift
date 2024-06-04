@@ -21,9 +21,9 @@ struct Start: View {
                 .resizable()
                 .frame(width: 337, height: 211)
                 .accessibilityHidden(true)
-            Text("Happy Beam")
+            Text("Happy Beam", comment: "The name of the game.")
                 .font(.system(size: 30, weight: .bold))
-            Text("Cheer up grumpy clouds by shining a happy beam with your heart.")
+            Text("Cheer up grumpy clouds by shining a happy beam with your heart.", comment: "This text explains the purpose of the game.")
                 .multilineTextAlignment(.center)
                 .font(.headline)
                 .frame(width: 340)
@@ -34,7 +34,7 @@ struct Start: View {
                         gameModel.isPlaying = true
                         gameModel.timeLeft = GameModel.gameTime
                     } label: {
-                        Text("Play Solo")
+                        Text("Play Solo", comment: "A game mode where the player plays in single-player mode.")
                             .frame(maxWidth: .infinity)
                     }
                     .disabled(!gameModel.readyToStart)
@@ -50,15 +50,15 @@ struct Start: View {
                             }
                         }
                     } label: {
-                        Text("Play with Friends")
+                        Text("Play with Friends", comment: "A game mode where the player plays in multi-player mode.")
                             .frame(maxWidth: .infinity)
                     }
                     .disabled(!groupStateObserver.isEligibleForGroupSession)
                 }
                 .font(.system(size: 16, weight: .bold))
-                .frame(width: 180)
+                .frame(width: 200)
             } else {
-                ProgressView("Loading assets...")
+                ProgressView("Loading assets…")
             }
             
             Spacer()

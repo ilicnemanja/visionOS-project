@@ -38,6 +38,8 @@
 		32BD3B6A299C2729005798DF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BD3B69299C2729005798DF /* Extensions.swift */; };
 		32C96CBF2A2FED900030AA37 /* Packages in Resources */ = {isa = PBXBuildFile; fileRef = 32C96CBE2A2FED900030AA37 /* Packages */; };
 		32D0FA0F291EE85800FF07D8 /* HappyBeamSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D0FA0E291EE85800FF07D8 /* HappyBeamSpace.swift */; };
+		B0B8C3EA2BDC363900704A2C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B0B8C3E92BDC363900704A2C /* Localizable.xcstrings */; };
+		B0CF536A2BF5E560000E4337 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B0CF53692BF5E560000E4337 /* InfoPlist.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +80,8 @@
 		32D0FA0E291EE85800FF07D8 /* HappyBeamSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyBeamSpace.swift; sourceTree = "<group>"; };
 		69D019E13699007BC04C1F1F /* SampleCode.xcconfig */ = {isa = PBXFileReference; name = SampleCode.xcconfig; path = Configuration/SampleCode.xcconfig; sourceTree = "<group>"; };
 		9823BBED79461E85755AF17F /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE.txt; sourceTree = "<group>"; };
+		B0B8C3E92BDC363900704A2C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B0CF53692BF5E560000E4337 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +141,8 @@
 				321A0C18291C02B90042A987 /* Assets.xcassets */,
 				321A0C1D291C02B90042A987 /* Info.plist */,
 				321A0C1A291C02B90042A987 /* Preview Content */,
+				B0B8C3E92BDC363900704A2C /* Localizable.xcstrings */,
+				B0CF53692BF5E560000E4337 /* InfoPlist.xcstrings */,
 			);
 			path = HappyBeam;
 			sourceTree = "<group>";
@@ -247,7 +253,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1600;
 				ORGANIZATIONNAME = Apple;
 				TargetAttributes = {
 					321A0C0A291C02B70042A987 = {
@@ -262,6 +268,11 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				fr,
+				ko,
+				zh_CN,
+				ja,
 			);
 			mainGroup = 321A0C02291C02B70042A987;
 			productRefGroup = 321A0C0C291C02B80042A987 /* Products */;
@@ -284,12 +295,14 @@
 				321A0C1C291C02B90042A987 /* Preview Assets.xcassets in Resources */,
 				3299370E2A12A8B60073F0B0 /* happyBeamMenu.m4a in Resources */,
 				329937132A12A8B60073F0B0 /* happyBeamVictory.m4a in Resources */,
+				B0CF536A2BF5E560000E4337 /* InfoPlist.xcstrings in Resources */,
 				1F8249602A16EEDA00C2F5D3 /* Cloud.usdz in Resources */,
 				3299370D2A12A8B60073F0B0 /* cloudHit1.m4a in Resources */,
 				329937102A12A8B60073F0B0 /* happyBeamGameplay.m4a in Resources */,
 				321A0C19291C02B90042A987 /* Assets.xcassets in Resources */,
 				329937122A12A8B60073F0B0 /* cloudHit4.m4a in Resources */,
 				32745A162A02F4C1000035F8 /* UpdatedGrumpyScene2.usdz in Resources */,
+				B0B8C3EA2BDC363900704A2C /* Localizable.xcstrings in Resources */,
 				3299370F2A12A8B60073F0B0 /* cloudHit3.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -329,6 +342,7 @@
 			baseConfigurationReference = 69D019E13699007BC04C1F1F /* SampleCode.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -380,6 +394,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = xros;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
@@ -390,6 +405,7 @@
 			baseConfigurationReference = 69D019E13699007BC04C1F1F /* SampleCode.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -434,6 +450,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = xros;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 				XROS_DEPLOYMENT_TARGET = 1.0;
@@ -452,6 +469,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Happy Beam";
@@ -460,7 +478,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.happybeam${SAMPLE_CODE_DISAMBIGUATOR}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -470,6 +489,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
@@ -485,6 +505,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Happy Beam";
@@ -493,7 +514,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.happybeam${SAMPLE_CODE_DISAMBIGUATOR}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -503,6 +525,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
+				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};

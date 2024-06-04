@@ -31,9 +31,14 @@ struct MultiPlay: View {
                         Text(verbatim: "\(String(format: "%02d", gameModel.score))")
                             .font(.system(size: 60))
                             .bold()
-                            .accessibilityLabel(Text("Score"))
-                            .accessibilityValue(Text("\(gameModel.score)"))
-                        Text("\(fantasyName(for: you, in: sortedByScore)) (you)")
+                            .accessibilityLabel(Text("Score",
+                                comment: "For accessibility: A string that indicates this number is the player's current score in the game."))
+                            .accessibilityValue(Text(verbatim: "\(gameModel.score)"))
+                        Text("\(fantasyName(for: you, in: sortedByScore)) (you)",
+                             comment: """
+                                    The player's name in the game followed by the word you to indicate that fact. \
+                                    The name can be anything they chose.
+                                    """)
                             .font(.system(size: 20))
                             .bold()
                             .accessibilityHidden(true)
@@ -44,8 +49,8 @@ struct MultiPlay: View {
                 }
                 ForEach(gameModel.players.filter { $0.name != you.name }, id: \.name) { player in
                     HStack {
-                        Text(fantasyName(for: player, in: gameModel.players))
-                        Text("\(player.score)")
+                        Text(verbatim: fantasyName(for: player, in: gameModel.players))
+                        Text(verbatim: "\(player.score)")
                     }
                     .opacity(0.5)
                 }
@@ -64,8 +69,9 @@ struct MultiPlay: View {
                     .padding(.trailing, 10)
                     ProgressView(value: (progress > 1.0 || progress < 0.0) ? 1.0 : progress)
                         .contentShape(.accessibility, Capsule().offset(y: -3))
-                        .accessibilityLabel("")
-                        .accessibilityValue(Text("\(gameModel.timeLeft) seconds remaining"))
+                        .accessibilityLabel(Text(verbatim: ""))
+                        .accessibilityValue(Text("\(gameModel.timeLeft) seconds remaining",
+                                                 comment: "For accessibility: The time remaining in the game in seconds."))
                         .tint(Color(uiColor: UIColor(red: 242 / 255, green: 68 / 255, blue: 206 / 255, alpha: 1.0)))
                         .padding(.vertical, 30)
                     Button {

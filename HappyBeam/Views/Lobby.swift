@@ -46,7 +46,7 @@ struct Lobby: View {
     
     var inputSelection: some View {
         VStack {
-            Text("Choose how you’ll cheer up grumpy clouds.")
+            Text("Choose how you’ll cheer up grumpy clouds.", comment: "Asks the user about how they will want to control the game.")
                 .font(.title)
                 .padding(.top, 40)
                 .padding(.bottom, 30)
@@ -56,7 +56,7 @@ struct Lobby: View {
                         chooseInputAndReady(.hands)
                     } label: {
                         Label {
-                            Text("Make a heart with two hands.")
+                            Text("Make a heart with two hands.", comment: "A way to control the game.")
                         } icon: {
                             Image("gesture_hand")
                                 .resizable()
@@ -70,9 +70,9 @@ struct Lobby: View {
                     .buttonBorderShape(.roundedRectangle(radius: 28))
                     .padding(.bottom, 10)
                     
-                    Text("Make a heart with two hands.")
+                    Text("Make a heart with two hands.", comment: "A way to control the game.")
                         .font(.headline)
-                        .frame(width: 216)
+                        .frame(width: 260)
                         .accessibilityHidden(true)
                 }
 
@@ -81,7 +81,7 @@ struct Lobby: View {
                         chooseInputAndReady(.alternative)
                     } label: {
                         Label {
-                            Text("Use a pinch gesture or a compatible device.")
+                            Text("Use a pinch gesture or a compatible device.", comment: "A way to control the game.")
                         } icon: {
                             Image("keyboardGameController")
                                 .resizable()
@@ -93,9 +93,9 @@ struct Lobby: View {
                     .buttonBorderShape(.roundedRectangle(radius: 28))
                     .padding(.bottom, 10)
                     
-                    Text("Use a pinch gesture or a compatible device.")
+                    Text("Use a pinch gesture or a compatible device.", comment: "A way to control the game.")
                         .font(.headline)
-                        .frame(width: 216)
+                        .frame(width: 260)
                         .accessibilityHidden(true)
                 }
             }
@@ -136,8 +136,10 @@ struct Lobby: View {
     var multiWaiting: some View {
         VStack(spacing: 20) {
             Image("shareplayGraphic")
-            Text("Waiting for all players to choose.")
+            Text("Waiting for all players to choose.", comment: "Informative message about why the multi-player game has not yet started.")
                 .font(.title)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 44)
             HStack(spacing: 10) {
                 ForEach(gameModel.players, id: \.name) { player in
                     if player.isReady {

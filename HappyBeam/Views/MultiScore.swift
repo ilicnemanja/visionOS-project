@@ -20,33 +20,30 @@ struct MultiScore: View {
                 .accessibilityHidden(true)
             
             if youWon {
-                Text("You won!")
+                Text("You won!", comment: "This is an indication that the player has won the game.")
                     .font(.system(size: 30, weight: .bold))
                     .offset(y: -13)
             } else {
-                Text("\(fantasyName(for: sortedByScore.first!, in: gameModel.players)) won!")
+                Text("\(fantasyName(for: sortedByScore.first!, in: gameModel.players)) won!",
+                     comment: "This is an indication that a different player has won the game, referring to them by name.")
                     .font(.system(size: 30, weight: .bold))
                     .offset(y: -13)
             }
 
             ForEach(sortedByScore, id: \.name) { player in
                 HStack {
-                    Text("\(sortedByScore.firstIndex(where: { $0.name == player.name })! + 1). " + fantasyName(for: player, in: gameModel.players)
-                         + (player.name == you.name
-                         ? "(you) \(player.score)"
-                         : " \(player.score)"))
-
+                    Text(verbatim: multiPlayerScore(sortedByScore: sortedByScore, player: player))
                 }
                 .font(.headline)
             }
-            .frame(minWidth: 0, maxWidth: 135, alignment: .leading)
+            .frame(minWidth: 0, maxWidth: 160, alignment: .leading)
             .offset(y: -13)
             
             Group {
                 Button {
                     playAgain()
                 } label: {
-                    Text("Play Again")
+                    Text("Play Again", comment: "An action the player can take after the game has concluded, to play again.")
                         .frame(maxWidth: .infinity)
                 }
                 Button {
@@ -54,11 +51,11 @@ struct MultiScore: View {
                         await goBackToStart()
                     }
                 } label: {
-                    Text("Back to Main Menu")
+                    Text("Back to Main Menu", comment: "An action the player can take after the game has concluded, to go back to the main menu.")
                         .frame(maxWidth: .infinity)
                 }
             }
-            .frame(width: 220)
+            .frame(width: 260)
         }
         .padding(15)
         .frame(width: 634, height: 550)
@@ -92,6 +89,14 @@ struct MultiScore: View {
         gameModel.isInputSelected = true
         gameModel.isCountDownReady = true
         gameModel.inputKind = inputChoice
+    }
+    
+    func multiPlayerScore(sortedByScore: [Player], player: Player) -> String {
+        
+        return "\(sortedByScore.firstIndex(where: { $0.name == player.name })! + 1). " + fantasyName(for: player, in: gameModel.players)
+        + (player.name == you.name
+           ? String(localized: "(you)", comment: "Label next to a player's name to indicate who it is.") as String + " \(player.score)"
+        : " \(player.score)")
     }
     
     @MainActor

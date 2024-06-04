@@ -26,17 +26,17 @@ class Player {
 
 /// A set of fake players for use in previews and testing.
 var initialPlayers: [Player] = [
-    .init(name: "Altus", score: 7, color: .green),
-    .init(name: "Nimbus", score: 2, color: .yellow),
-    .init(name: "Cumulus", score: 4, color: .purple),
-    .init(name: "Cirrus", score: 5, color: .red)
+    .init(name: String(localized: "Altus"), score: 7, color: .green),
+    .init(name: String(localized: "Nimbus"), score: 2, color: .yellow),
+    .init(name: String(localized: "Cumulus"), score: 4, color: .purple),
+    .init(name: String(localized: "Cirrus"), score: 5, color: .red)
 ]
 
 /// Maps player names to friendly cloud names.
 ///
 /// Player names are UUIDs during multiplayer; these themed names improve the presentation.
 func fantasyName(for player: Player, in players: [Player]) -> String {
-    let fantasyNames = ["Altus", "Nimbus", "Cumulus", "Cirrus"]
+    let fantasyNames = [String(localized: "Altus"), String(localized: "Nimbus"), String(localized: "Cumulus"), String(localized: "Cirrus")]
     
     let uuids = players.map { $0.name }.sorted()
     return fantasyNames[uuids.firstIndex(of: player.name)!]

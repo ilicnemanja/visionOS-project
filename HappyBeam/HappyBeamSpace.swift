@@ -33,7 +33,7 @@ struct HappyBeamSpace: View {
         RealityView { content in
             // The root entity.
             content.add(spaceOrigin)
-            content.add(cameraAnchor)
+            content.add(cameraRelativeAnchor)
             spaceOrigin.addChild(beamIntermediate)
             
             // MARK: Events
@@ -326,7 +326,7 @@ enum BeamType {
 var isShowingBeam = false {
     didSet {
         if oldValue != isShowingBeam {
-            AccessibilityNotification.Announcement(isShowingBeam ? "Casting beam" : "Hiding beam").post()
+            AccessibilityNotification.Announcement(isShowingBeam ? String(localized: "Casting beam") : String(localized: "Hiding beam")).post()
         }
     }
 }

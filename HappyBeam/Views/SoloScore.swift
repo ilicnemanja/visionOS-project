@@ -18,9 +18,9 @@ struct SoloScore: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 497, height: 200, alignment: .center)
                 .accessibilityHidden(true)
-            Text("Great job!")
+            Text("Great job!", comment: "Praise for the player.")
                 .font(.system(size: 36, weight: .bold))
-            Text("You cheered up \(gameModel.score) grumpy clouds.")
+            Text("You cheered up \(gameModel.score) grumpy clouds.", comment: "This text describes the results of the players efforts in the game.")
                 .multilineTextAlignment(.center)
                 .font(.headline)
                 .frame(width: 340)
@@ -29,7 +29,7 @@ struct SoloScore: View {
                 Button {
                     playAgain()
                 } label: {
-                    Text("Play Again")
+                    Text("Play Again", comment: "An action the player can take after the game has concluded, to play again.")
                         .frame(maxWidth: .infinity)
                 }
                 Button {
@@ -37,11 +37,11 @@ struct SoloScore: View {
                         await goBackToStart()
                     }
                 } label: {
-                    Text("Back to Main Menu")
+                    Text("Back to Main Menu", comment: "An action the player can take after the game has concluded, to go back to the main menu.")
                         .frame(maxWidth: .infinity)
                 }
             }
-            .frame(width: 220)
+            .frame(width: 260)
         }
         
         .padding(15)

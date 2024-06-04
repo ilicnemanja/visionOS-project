@@ -11,7 +11,7 @@ import RealityKit
 let spaceOrigin = Entity()
 
 /// An anchor that helps calculate the position of clouds relative to the player.
-let cameraAnchor = AnchorEntity(.head)
+let cameraRelativeAnchor = AnchorEntity(.head)
 
 /// A container for asset names that the app loads from a bundle at runtime.
 struct BundleAssets {

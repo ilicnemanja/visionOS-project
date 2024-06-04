@@ -20,8 +20,8 @@ func startSession() async throws {
 struct HeartProjection: GroupActivity {
     var metadata: GroupActivityMetadata {
         var data = GroupActivityMetadata()
-        data.title = "Happy Beam"
-        data.subtitle = "Project happy hearts to cheer up grumpy clouds."
+        data.title = String(localized: "Happy Beam", comment: "The name of the game.")
+        data.subtitle = String(localized: "Project happy hearts to cheer up grumpy clouds.", comment: "Subtitle text for the SharePlay join dialog.")
         data.supportsContinuationOnTV = false
         return data
     }

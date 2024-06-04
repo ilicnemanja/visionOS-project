@@ -120,7 +120,7 @@ func postCloudOverviewAnnouncement(gameModel: GameModel) {
         if cloudInstance?.isHappy ?? false {
             continue
         }
-        let cloudPosition = cloud.position(relativeTo: cameraAnchor)
+        let cloudPosition = cloud.position(relativeTo: cameraRelativeAnchor)
         if cloudPosition.z > 0 {
             averageCameraPositionBehind += cloudPosition
             cloudsBehind += 1
@@ -130,44 +130,70 @@ func postCloudOverviewAnnouncement(gameModel: GameModel) {
         }
     }
     averageCameraPositionFront /= [Float(cloudsFront), Float(cloudsFront), Float(cloudsFront)]
-    var cloudPositioningAnnouncementFront = String(format: "%d \(cloudsFront > 1 ? "clouds" : "cloud")", cloudsFront)
+    var cloudPositioningAnnouncementFront: String
     if averageCameraPositionFront.y > 0.5 {
-        cloudPositioningAnnouncementFront += " above and in front of you "
+        cloudPositioningAnnouncementFront = String(localized: "\(cloudsFront) clouds above and in front of you",
+                                                   comment: "Describes the position of clouds in the 3D scene.")
     } else if averageCameraPositionFront.y < -0.5 {
-        cloudPositioningAnnouncementFront += " below and in front of you "
+        cloudPositioningAnnouncementFront = String(localized: "\(cloudsFront) clouds below and in front of you",
+                                                   comment: "Describes the position of clouds in the 3D scene.")
     } else {
-        cloudPositioningAnnouncementFront += " in front of you "
+        cloudPositioningAnnouncementFront = String(localized: "\(cloudsFront) clouds in front of you",
+                                                   comment: "Describes the position of clouds in the 3D scene.")
     }
     
     if averageCameraPositionFront.x > 0.5 {
-        cloudPositioningAnnouncementFront += "to the right"
+        cloudPositioningAnnouncementFront = String(localized: "\(cloudPositioningAnnouncementFront) to the right",
+                                                   comment: """
+                                                            Describes the position of clouds in the 3D scene.
+                                                            The first parameter is a string describing the position of the clouds.
+                                                            """)
     } else if averageCameraPositionFront.x < -0.5 {
-        cloudPositioningAnnouncementFront += "to the left"
+        cloudPositioningAnnouncementFront = String(localized: "\(cloudPositioningAnnouncementFront) to the left",
+                                                   comment: """
+                                                            Describes the position of clouds in the 3D scene.
+                                                            The first parameter is a string describing the position of the clouds.
+                                                            """)
     }
     
     averageCameraPositionBehind /= [Float(cloudsBehind), Float(cloudsBehind), Float(cloudsBehind)]
-    var cloudPositioningAnnouncementBehind = String(format: "%d \(cloudsBehind > 1 ? "clouds" : "cloud")", cloudsBehind)
+    var cloudPositioningAnnouncementBehind: String
     if averageCameraPositionBehind.y > 0.5 {
-        cloudPositioningAnnouncementBehind += " above and behind you "
+        cloudPositioningAnnouncementBehind = String(localized: "\(cloudsFront) clouds above and behind you",
+                                                    comment: "Describes the position of clouds in the 3D scene.")
     } else if averageCameraPositionBehind.y < -0.5 {
-        cloudPositioningAnnouncementBehind += " below and behind you "
+        cloudPositioningAnnouncementBehind = String(localized: "\(cloudsFront) clouds below and behind you",
+                                                    comment: "Describes the position of clouds in the 3D scene.")
     } else {
-        cloudPositioningAnnouncementBehind += " behind you "
+        cloudPositioningAnnouncementBehind = String(localized: "\(cloudsFront) clouds behind you",
+                                                    comment: "Describes the position of clouds in the 3D scene.")
     }
     
     if averageCameraPositionBehind.x > 0.5 {
-        cloudPositioningAnnouncementBehind += "to the right"
+        cloudPositioningAnnouncementBehind = String(localized: "\(cloudPositioningAnnouncementBehind) to the right",
+                                                    comment: """
+                                                             Describes the position of clouds in the 3D scene.
+                                                             The first parameter is a string describing the position of the clouds.
+                                                             """)
     } else if averageCameraPositionBehind.x < -0.5 {
-        cloudPositioningAnnouncementBehind += "to the left"
+        cloudPositioningAnnouncementBehind = String(localized: "\(cloudPositioningAnnouncementBehind) to the left",
+                                                    comment: """
+                                                             Describes the position of clouds in the 3D scene.
+                                                             The first parameter is a string describing the position of the clouds.
+                                                             """)
     }
-    
+
     var cloudPositioningAnnouncement = ""
     if cloudsFront > 0 && cloudsBehind == 0 {
         cloudPositioningAnnouncement = cloudPositioningAnnouncementFront
     } else if cloudsBehind > 0 && cloudsFront == 0 {
         cloudPositioningAnnouncement = cloudPositioningAnnouncementBehind
     } else {
-        cloudPositioningAnnouncement = cloudPositioningAnnouncementFront + " " + cloudPositioningAnnouncementBehind
+        cloudPositioningAnnouncement = String(localized: "\(cloudPositioningAnnouncementFront) \(cloudPositioningAnnouncementBehind)",
+                                              comment: """
+                                                    Text describing the position of clouds on the screen. \
+                                                    The first parameter is the clouds in front and the second parameter is the clouds behind the user.
+                                                    """)
     }
     
     AccessibilityNotification.Announcement(cloudPositioningAnnouncement).post()

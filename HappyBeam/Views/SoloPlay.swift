@@ -26,28 +26,28 @@ struct SoloPlay: View {
                             .labelStyle(.iconOnly)
                     }
                     .offset(x: -23)
-
-                    VStack {
-                        Text(verbatim: "\(String(format: "%02d", gameModel.score))")
-                            .font(.system(size: 60))
-                            .bold()
-                            .accessibilityLabel(Text("Score"))
-                            .accessibilityValue(Text("\(gameModel.score)"))
-                        Text("score")
-                            .font(.system(size: 30))
-                            .bold()
-                            .accessibilityHidden(true)
-                            .offset(y: -5)
-                    }
+                    Text(verbatim: "\(String(format: "%02d", gameModel.score))")
+                        .font(.system(size: 60))
+                        .bold()
+                        .accessibilityLabel(Text("Score",
+                                    comment: "For accessibility: A string that indicates this number is the player's current score in the game."))
+                        .accessibilityValue(Text(verbatim: "\(gameModel.score)"))
                     .padding(.leading, 0)
                     .padding(.trailing, 60)
                 }
+                Text("score", comment: "A string that indicates the number immediately above is the player's current score in the game.")
+                    .font(.system(size: 30))
+                    .bold()
+                    .accessibilityHidden(true)
+                    .offset(y: -5)
                 HStack {
                     Button {
                         gameModel.isMuted.toggle()
                     } label: {
                         Label(
-                            gameModel.isMuted ? "Play music" : "Stop music",
+                            gameModel.isMuted
+                            ? String(localized: "Play music", comment: "Button to play music")
+                            : String(localized: "Stop music", comment: "Button to stop music"),
                             systemImage: gameModel.isMuted ? "speaker.slash.fill" : "speaker.wave.3.fill"
                         )
                             .labelStyle(.iconOnly)
@@ -56,7 +56,7 @@ struct SoloPlay: View {
                     .padding(.trailing, 10)
                     ProgressView(value: (progress > 1.0 || progress < 0.0) ? 1.0 : progress)
                         .contentShape(.accessibility, Capsule().offset(y: -3))
-                        .accessibilityLabel("")
+                        .accessibilityLabel(Text(verbatim: ""))
                         .accessibilityValue(Text("\(gameModel.timeLeft) seconds remaining"))
                         .tint(Color(uiColor: UIColor(red: 242 / 255, green: 68 / 255, blue: 206 / 255, alpha: 1.0)))
                         .padding(.vertical, 30)
@@ -65,10 +65,10 @@ struct SoloPlay: View {
                         gameModel.isMuted.toggle()
                     } label: {
                         if gameModel.isPaused {
-                            Label("Play", systemImage: "play.fill")
+                            Label(String(localized: "Play", comment: "Button to play the game"), systemImage: "play.fill")
                                 .labelStyle(.iconOnly)
                         } else {
-                            Label("Pause", systemImage: "pause.fill")
+                            Label(String(localized: "Pause", comment: "Button to pause the game"), systemImage: "pause.fill")
                                 .labelStyle(.iconOnly)
                         }
                     }
