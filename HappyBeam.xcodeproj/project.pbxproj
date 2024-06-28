@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F8249602A16EEDA00C2F5D3 /* Cloud.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1F82495F2A16EEDA00C2F5D3 /* Cloud.usdz */; };
+		121C61D32C2F01FF0066C65F /* Cloud.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 121C61D22C2F01FF0066C65F /* Cloud.usdz */; };
+		1F8249602A16EEDA00C2F5D3 /* Cloud2.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 1F82495F2A16EEDA00C2F5D3 /* Cloud2.usdz */; };
 		321A0C13291C02B80042A987 /* HappyBeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321A0C12291C02B80042A987 /* HappyBeamApp.swift */; };
 		321A0C19291C02B90042A987 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 321A0C18291C02B90042A987 /* Assets.xcassets */; };
 		321A0C1C291C02B90042A987 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 321A0C1B291C02B90042A987 /* Preview Assets.xcassets */; };
@@ -43,7 +44,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1F82495F2A16EEDA00C2F5D3 /* Cloud.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Cloud.usdz; sourceTree = "<group>"; };
+		121C61D22C2F01FF0066C65F /* Cloud.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cloud.usdz; sourceTree = "<group>"; };
+		1F82495F2A16EEDA00C2F5D3 /* Cloud2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cloud2.usdz; sourceTree = "<group>"; };
 		321A0C0B291C02B80042A987 /* HappyBeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HappyBeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		321A0C12291C02B80042A987 /* HappyBeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyBeamApp.swift; sourceTree = "<group>"; };
 		321A0C18291C02B90042A987 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -198,7 +200,8 @@
 		32BD3B6B299C2790005798DF /* USDZs */ = {
 			isa = PBXGroup;
 			children = (
-				1F82495F2A16EEDA00C2F5D3 /* Cloud.usdz */,
+				121C61D22C2F01FF0066C65F /* Cloud.usdz */,
+				1F82495F2A16EEDA00C2F5D3 /* Cloud2.usdz */,
 				32745A152A02F4C1000035F8 /* UpdatedGrumpyScene2.usdz */,
 				328389172A04203700CD388B /* fireworks.usdz */,
 			);
@@ -294,9 +297,10 @@
 				328389182A04203700CD388B /* fireworks.usdz in Resources */,
 				321A0C1C291C02B90042A987 /* Preview Assets.xcassets in Resources */,
 				3299370E2A12A8B60073F0B0 /* happyBeamMenu.m4a in Resources */,
+				121C61D32C2F01FF0066C65F /* Cloud.usdz in Resources */,
 				329937132A12A8B60073F0B0 /* happyBeamVictory.m4a in Resources */,
 				B0CF536A2BF5E560000E4337 /* InfoPlist.xcstrings in Resources */,
-				1F8249602A16EEDA00C2F5D3 /* Cloud.usdz in Resources */,
+				1F8249602A16EEDA00C2F5D3 /* Cloud2.usdz in Resources */,
 				3299370D2A12A8B60073F0B0 /* cloudHit1.m4a in Resources */,
 				329937102A12A8B60073F0B0 /* happyBeamGameplay.m4a in Resources */,
 				321A0C19291C02B90042A987 /* Assets.xcassets in Resources */,

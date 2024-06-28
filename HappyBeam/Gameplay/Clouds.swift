@@ -201,15 +201,15 @@ func postCloudOverviewAnnouncement(gameModel: GameModel) {
 
 /// Plays one of the cloud animations on the cloud you specify.
 @MainActor func cloudAnimate(_ cloud: Entity, kind: CloudAnimations, shouldRepeat: Bool) {
-    guard let animation = cloudAnimations[kind] else {
-        fatalError("Tried to load an animation that doesn't exist: \(kind)")
-    }
-    
-    if shouldRepeat {
-        cloud.playAnimation(animation.repeat(count: 100))
-    } else {
-        cloud.playAnimation(animation)
-    }
+//    guard let animation = cloudAnimations[kind] else {
+//        fatalError("Tried to load an animation that doesn't exist: \(kind)")
+//    }
+//    
+//    if shouldRepeat {
+//        cloud.playAnimation(animation.repeat(count: 100))
+//    } else {
+//        cloud.playAnimation(animation)
+//    }
 }
 
 /// A map from a kind of animation to the animation resource that contains that animation.

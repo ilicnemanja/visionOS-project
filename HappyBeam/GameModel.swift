@@ -224,10 +224,10 @@ class GameModel {
             }
             
             // Generate animations inside the cloud models.
-            let def = cloudTemplate!.availableAnimations[0].definition
-            cloudAnimations[.sadBlink] = try .generate(with: AnimationView(source: def, trimStart: 1.0, trimEnd: 7.0))
-            cloudAnimations[.smile] = try .generate(with: AnimationView(source: def, trimStart: 7.5, trimEnd: 10.0))
-            cloudAnimations[.happyBlink] = try .generate(with: AnimationView(source: def, trimStart: 10.0, trimEnd: 15.0))
+//            let def = cloudTemplate!.availableAnimations[0].definition
+//            cloudAnimations[.sadBlink] = try .generate(with: AnimationView(source: def, trimStart: 1.0, trimEnd: 7.0))
+//            cloudAnimations[.smile] = try .generate(with: AnimationView(source: def, trimStart: 7.5, trimEnd: 10.0))
+//            cloudAnimations[.happyBlink] = try .generate(with: AnimationView(source: def, trimStart: 10.0, trimEnd: 15.0))
             
             generateCloudMovementAnimations()
             
@@ -252,8 +252,8 @@ class GameModel {
             
             let line = FromToByAnimation<Transform>(
                 name: "line",
-                from: .init(scale: .init(repeating: 1), translation: simd_float(start.vector)),
-                to: .init(scale: .init(repeating: 1), translation: simd_float(end.vector)),
+                from: .init(scale: .init(repeating: 0.005), translation: simd_float(start.vector)),
+                to: .init(scale: .init(repeating: 0.005), translation: simd_float(end.vector)),
                 duration: speed,
                 bindTarget: .transform
             )
