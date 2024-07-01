@@ -1,8 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "Bottom Layer@2x.png",
-      "idiom" : "reality",
+      "filename" : "background.jpg",
+      "idiom" : "vision",
       "scale" : "2x"
     }
   ],
