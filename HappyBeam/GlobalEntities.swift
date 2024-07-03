@@ -25,8 +25,8 @@ struct BundleAssets {
         heartLightScene = "Heart.usda",
         heartLightEntity = "Heart",
 
-        cloud = "Cloud.usdz",
-        cloudScene = "Cloud.usda",
+        cloud = "Basketball.usdz",
+        cloudScene = "Basketball.usda",
         cloudEntity = "UpdatedGrumpyScene2",
         cloudParameterName = "happiness",
 
