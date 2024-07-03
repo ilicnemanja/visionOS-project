@@ -209,8 +209,10 @@ class GameModel {
             heart?.components[InputTargetComponent.self] = InputTargetComponent(allowedInputTypes: .all)
             
             cloudTemplate = try? await Entity(named: BundleAssets.cloud)
-            
-            guard turret != nil, heart != nil, cloudTemplate != nil else {
+            nflBallTemplate = try? await Entity(named: BundleAssets.nflBall)
+            soccerBallTemplate = try? await Entity(named: BundleAssets.soccerBall)
+
+            guard turret != nil, heart != nil, cloudTemplate != nil, nflBallTemplate != nil, soccerBallTemplate != nil else {
                 fatalError("Error loading assets.")
             }
             

@@ -22,6 +22,10 @@ class Cloud: Identifiable {
 
 /// The main cloud model; it's cloned when a new cloud spawns.
 var cloudTemplate: Entity? = nil
+var nflBallTemplate: Entity? = nil
+var soccerBallTemplate: Entity? = nil
+
+
 var cloudNumber = 0
 
 /// Creates a cloud and places it in the space.
@@ -33,7 +37,7 @@ func spawnCloud() async throws -> Entity {
         z: cloudPaths[cloudPathsIndex].2
     )
     
-    let cloud = try await spawnCloudExact(
+    let cloud = try await spawnEntityExact(
         start: start,
         end: .init(
             x: start.x + CloudSpawnParameters.deltaX,
@@ -54,9 +58,15 @@ func spawnCloud() async throws -> Entity {
 /// Storage for each of the linear cloud movement animations.
 var cloudMovementAnimations: [AnimationResource] = []
 
+/// Randomly selects a template for spawning.
+func getRandomTemplate() -> Entity? {
+    let templates = [cloudTemplate, nflBallTemplate, soccerBallTemplate]
+    return templates.randomElement() ?? nil
+}
+
 /// Places a cloud in the scene and sets it on a set journey.
 @MainActor
-func spawnCloudExact(start: Point3D, end: Point3D, speed: Double) async throws -> Entity {
+func spawnEntityExact(start: Point3D, end: Point3D, speed: Double) async throws -> Entity {
     if cloudTemplate == nil {
         guard let cloud = await loadFromRealityComposerPro(
             named: BundleAssets.cloudEntity,
@@ -66,39 +76,58 @@ func spawnCloudExact(start: Point3D, end: Point3D, speed: Double) async throws -
         }
         cloudTemplate = cloud
     }
-    guard let cloudTemplate = cloudTemplate else {
-        fatalError("Cloud template is nil.")
+    if nflBallTemplate == nil {
+        guard let nflBall = await loadFromRealityComposerPro(
+                named: BundleAssets.nflBall,
+                fromSceneNamed: BundleAssets.nflBallScene
+        ) else {
+            fatalError("Error loading cloud from Reality Composer Pro project.")
+        }
+        nflBallTemplate = nflBall
     }
-    
-    let cloud = cloudTemplate.clone(recursive: true)
-    cloud.generateCollisionShapes(recursive: true)
-    cloud.name = "CCloud\(cloudNumber)"
+    if soccerBallTemplate == nil {
+        guard let soccerBall = await loadFromRealityComposerPro(
+                named: BundleAssets.soccerBall,
+                fromSceneNamed: BundleAssets.soccerBallScene
+        ) else {
+            fatalError("Error loading cloud from Reality Composer Pro project.")
+        }
+        soccerBallTemplate = soccerBall
+    }
+
+    guard let selectedTemplate = getRandomTemplate() else {
+        fatalError("No template selected.")
+    }
+
+    let entity = selectedTemplate.clone(recursive: true)
+    entity.generateCollisionShapes(recursive: true)
+    entity.name = "Entity\(cloudNumber)"
     cloudNumber += 1
-    
-    cloud.components[PhysicsBodyComponent.self] = PhysicsBodyComponent()
-    cloud.scale = .init(repeating: 0.001)
-    
-    cloud.position = simd_float(start.vector + .init(x: 0, y: 0, z: -0.7))
-    
+
+    entity.components[PhysicsBodyComponent.self] = PhysicsBodyComponent()
+    entity.scale = .init(repeating: 0.001)
+
+    entity.position = simd_float(start.vector + .init(x: 0, y: 0, z: -0.7))
+
     var accessibilityComponent = AccessibilityComponent()
-    accessibilityComponent.label = "Cloud"
+    accessibilityComponent.label = "Entity"
     accessibilityComponent.value = "Grumpy"
     accessibilityComponent.isAccessibilityElement = true
     accessibilityComponent.traits = [.button, .playsSound]
     accessibilityComponent.systemActions = [.activate]
-    cloud.components[AccessibilityComponent.self] = accessibilityComponent
-    
+    entity.components[AccessibilityComponent.self] = accessibilityComponent
+
     let animation = cloudMovementAnimations[cloudPathsIndex]
-    
-    cloud.playAnimation(animation, transitionDuration: 1.0, startsPaused: false)
-    cloud.setMaterialParameterValues(parameter: "saturation", value: .float(0.0))
-    cloud.setMaterialParameterValues(parameter: "animate_texture", value: .bool(false))
-    
-    cloudAnimate(cloud, kind: .sadBlink, shouldRepeat: false)
-    
-    spaceOrigin.addChild(cloud)
-    
-    return cloud
+
+    entity.playAnimation(animation, transitionDuration: 1.0, startsPaused: false)
+    entity.setMaterialParameterValues(parameter: "saturation", value: .float(0.0))
+    entity.setMaterialParameterValues(parameter: "animate_texture", value: .bool(false))
+
+    cloudAnimate(entity, kind: .sadBlink, shouldRepeat: false)
+
+    spaceOrigin.addChild(entity)
+
+    return entity
 }
 
 /// Describes the 3D scene relative to the player.
