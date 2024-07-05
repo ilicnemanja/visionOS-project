@@ -78,7 +78,7 @@ func handleBallHit(for cloud: Entity, gameModel: GameModel, remote: Bool = false
     let goUp = FromToByAnimation<Transform>(
         name: "goUp",
         from: .init(scale: .init(repeating: 1), translation: cloud.position),
-        to: .init(scale: .init(repeating: 1), translation: cloud.position + .init(x: 0, y: 9, z: 6)),
+        to: .init(scale: .init(repeating: 1), translation: cloud.position + .init(x: 0, y: 2000, z: 6)),
         duration: 2,
         bindTarget: .transform
     )
