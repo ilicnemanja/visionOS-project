@@ -10,7 +10,7 @@ import Spatial
 import RealityKit
 
 /// A data source to sync cloud information among multiple players.
-class Cloud: Identifiable {
+class Ball: Identifiable {
     var id: Int
     var isHappy: Bool
     
@@ -30,33 +30,33 @@ var cloudNumber = 0
 
 /// Creates a cloud and places it in the space.
 @MainActor
-func spawnCloud() async throws -> Entity {
+func spawnBall() async throws -> Entity {
     let start = Point3D(
-        x: cloudPaths[cloudPathsIndex].0,
-        y: cloudPaths[cloudPathsIndex].1,
-        z: cloudPaths[cloudPathsIndex].2
+        x: ballPaths[ballPathsIndex].0,
+        y: ballPaths[ballPathsIndex].1,
+        z: ballPaths[ballPathsIndex].2
     )
     
-    let cloud = try await spawnEntityExact(
+    let ball = try await spawnBallExact(
         start: start,
         end: .init(
-            x: start.x + CloudSpawnParameters.deltaX,
-            y: start.y + CloudSpawnParameters.deltaY,
-            z: start.z + CloudSpawnParameters.deltaZ
+            x: start.x + BallSpawnParameters.deltaX,
+            y: start.y + BallSpawnParameters.deltaY,
+            z: start.z + BallSpawnParameters.deltaZ
         ),
-        speed: CloudSpawnParameters.speed
+        speed: BallSpawnParameters.speed
     )
-    
+
     // Needs to increment *after* spawnCloudExact()
-    cloudPathsIndex += 1
-    cloudPathsIndex %= cloudPaths.count
-    
-    cloudEntities.append(cloud)
-    return cloud
+    ballPathsIndex += 1
+    ballPathsIndex %= ballPaths.count
+
+    ballEntities.append(ball)
+    return ball
 }
 
 /// Storage for each of the linear cloud movement animations.
-var cloudMovementAnimations: [AnimationResource] = []
+var ballMovementAnimations: [AnimationResource] = []
 
 /// Randomly selects a template for spawning.
 func getRandomTemplate() -> Entity? {
@@ -64,83 +64,118 @@ func getRandomTemplate() -> Entity? {
     return templates.randomElement() ?? nil
 }
 
+func doesIntersect(newEntity: Entity, start: Point3D) -> Bool {
+    return false
+
+    let newEntityBounds = newEntity.visualBounds(relativeTo: nil)
+    let newEntityMin = newEntityBounds.center - newEntityBounds.extents / 2
+    let newEntityMax = newEntityBounds.center + newEntityBounds.extents / 2
+
+    let newEntityMinPositioned = newEntityMin + SIMD3<Float>(Float(start.x), Float(start.y), Float(start.z))
+    let newEntityMaxPositioned = newEntityMax + SIMD3<Float>(Float(start.x), Float(start.y), Float(start.z))
+
+    for existingEntity in ballEntities {
+        let existingEntityBounds = existingEntity.visualBounds(relativeTo: nil)
+        let existingEntityMin = existingEntityBounds.center - existingEntityBounds.extents / 2
+        let existingEntityMax = existingEntityBounds.center + existingEntityBounds.extents / 2
+
+        let existingEntityMinPositioned = existingEntityMin + existingEntity.position
+        let existingEntityMaxPositioned = existingEntityMax + existingEntity.position
+
+        let intersects = (newEntityMinPositioned.x <= existingEntityMaxPositioned.x && newEntityMaxPositioned.x >= existingEntityMinPositioned.x) &&
+                (newEntityMinPositioned.y <= existingEntityMaxPositioned.y && newEntityMaxPositioned.y >= existingEntityMinPositioned.y) &&
+                (newEntityMinPositioned.z <= existingEntityMaxPositioned.z && newEntityMaxPositioned.z >= existingEntityMinPositioned.z)
+        if intersects {
+            return true
+        }
+    }
+    return false
+}
+
+func getNewStartPosition() -> Point3D {
+    let randomX = Double.random(in: -1.0...1.0)
+    let randomY = Double.random(in: -1.0...1.0)
+    let randomZ = Double.random(in: -1.0...1.0)
+    return Point3D(x: randomX, y: randomY, z: randomZ)
+}
+
 /// Places a cloud in the scene and sets it on a set journey.
 @MainActor
-func spawnEntityExact(start: Point3D, end: Point3D, speed: Double) async throws -> Entity {
-    if cloudTemplate == nil {
-        guard let cloud = await loadFromRealityComposerPro(
-            named: BundleAssets.cloudEntity,
-            fromSceneNamed: BundleAssets.cloudScene
-        ) else {
-            fatalError("Error loading cloud from Reality Composer Pro project.")
-        }
-        cloudTemplate = cloud
-    }
-    if nflBallTemplate == nil {
-        guard let nflBall = await loadFromRealityComposerPro(
-                named: BundleAssets.nflBall,
-                fromSceneNamed: BundleAssets.nflBallScene
-        ) else {
-            fatalError("Error loading cloud from Reality Composer Pro project.")
-        }
-        nflBallTemplate = nflBall
-    }
-    if soccerBallTemplate == nil {
-        guard let soccerBall = await loadFromRealityComposerPro(
-                named: BundleAssets.soccerBall,
-                fromSceneNamed: BundleAssets.soccerBallScene
-        ) else {
-            fatalError("Error loading cloud from Reality Composer Pro project.")
-        }
-        soccerBallTemplate = soccerBall
-    }
+func spawnBallExact(start: Point3D, end: Point3D, speed: Double) async throws -> Entity {
+//    if cloudTemplate == nil {
+//        guard let cloud = await loadFromRealityComposerPro(
+//                named: BundleAssets.cloudEntity,
+//                fromSceneNamed: BundleAssets.cloudScene
+//        ) else {
+//            fatalError("Error loading cloud from Reality Composer Pro project.")
+//        }
+//        cloudTemplate = cloud
+//    }
+//    if nflBallTemplate == nil {
+//        guard let nflBall = await loadFromRealityComposerPro(
+//                named: BundleAssets.nflBall,
+//                fromSceneNamed: BundleAssets.nflBallScene
+//        ) else {
+//            fatalError("Error loading nflBall from Reality Composer Pro project.")
+//        }
+//        nflBallTemplate = nflBall
+//    }
+//    if soccerBallTemplate == nil {
+//        guard let soccerBall = await loadFromRealityComposerPro(
+//                named: BundleAssets.soccerBall,
+//                fromSceneNamed: BundleAssets.soccerBallScene
+//        ) else {
+//            fatalError("Error loading soccerBall from Reality Composer Pro project.")
+//        }
+//        soccerBallTemplate = soccerBall
+//    }
 
     guard let selectedTemplate = getRandomTemplate() else {
         fatalError("No template selected.")
     }
 
-    let entity = selectedTemplate.clone(recursive: true)
-    entity.generateCollisionShapes(recursive: true)
-    entity.name = "Entity\(cloudNumber)"
+    let ball = selectedTemplate.clone(recursive: true)
+    ball.generateCollisionShapes(recursive: true)
+    ball.name = "CCloud\(cloudNumber)"
     cloudNumber += 1
 
-    entity.components[PhysicsBodyComponent.self] = PhysicsBodyComponent()
-    entity.scale = .init(repeating: 0.001)
+    ball.components[PhysicsBodyComponent.self] = PhysicsBodyComponent()
+//    ball.scale = .init(repeating: 0.001)
 
-    entity.position = simd_float(start.vector + .init(x: 0, y: 0, z: -0.7))
+    ball.position = simd_float(start.vector + .init(x: 0, y: 0, z: -0.7))
 
     var accessibilityComponent = AccessibilityComponent()
-    accessibilityComponent.label = "Entity"
+    accessibilityComponent.label = "Cloud"
     accessibilityComponent.value = "Grumpy"
     accessibilityComponent.isAccessibilityElement = true
     accessibilityComponent.traits = [.button, .playsSound]
     accessibilityComponent.systemActions = [.activate]
-    entity.components[AccessibilityComponent.self] = accessibilityComponent
+    ball.components[AccessibilityComponent.self] = accessibilityComponent
 
-    let animation = cloudMovementAnimations[cloudPathsIndex]
+    let animation = ballMovementAnimations[ballPathsIndex]
 
-    entity.playAnimation(animation, transitionDuration: 1.0, startsPaused: false)
-    entity.setMaterialParameterValues(parameter: "saturation", value: .float(0.0))
-    entity.setMaterialParameterValues(parameter: "animate_texture", value: .bool(false))
+    ball.playAnimation(animation, transitionDuration: speed, startsPaused: false)
+    ball.setMaterialParameterValues(parameter: "saturation", value: .float(0.0))
+    ball.setMaterialParameterValues(parameter: "animate_texture", value: .bool(false))
 
-    cloudAnimate(entity, kind: .sadBlink, shouldRepeat: false)
+    cloudAnimate(ball, kind: .sadBlink, shouldRepeat: false)
 
-    spaceOrigin.addChild(entity)
+    spaceOrigin.addChild(ball)
 
-    return entity
+    return ball
 }
 
 /// Describes the 3D scene relative to the player.
 func postCloudOverviewAnnouncement(gameModel: GameModel) {
-    guard !cloudEntities.isEmpty else {
+    guard !ballEntities.isEmpty else {
         return
     }
     var averageCameraPositionFront: SIMD3<Float> = [0, 0, 0]
     var averageCameraPositionBehind: SIMD3<Float> = [0, 0, 0]
     var cloudsFront = 0
     var cloudsBehind = 0
-    for cloud in cloudEntities {
-        let cloudInstance = gameModel.clouds.first(where: { cloudInstance in
+    for cloud in ballEntities {
+        let cloudInstance = gameModel.balls.first(where: { cloudInstance in
             if ("CCloud" + String(cloudInstance.id)) == cloud.name {
                 return true
             }
@@ -252,7 +287,7 @@ enum CloudAnimations {
 }
 
 /// Cloud spawn parameters (in meters).
-struct CloudSpawnParameters {
+struct BallSpawnParameters {
     static var deltaX = 0.02
     static var deltaY = -0.12
     static var deltaZ = 12.0
@@ -261,10 +296,10 @@ struct CloudSpawnParameters {
 }
 
 /// A counter that advances to the next cloud path.
-var cloudPathsIndex = 0
+var ballPathsIndex = 0
 
 /// A hand-picked selection of random starting parameters for the motion of the clouds.
-let cloudPaths: [(Double, Double, Double)] = [
+let ballPaths: [(Double, Double, Double)] = [
     (x: 1.757_231_498_429_01, y: 1.911_673_694_896_59, z: -8.094_368_331_589_704),
     (x: -0.179_269_237_592_594_17, y: 1.549_268_306_906_908_4, z: -7.254_713_426_424_875),
     (x: -0.013_296_800_013_828_491, y: 2.147_766_026_068_617_8, z: -8.601_541_438_900_849),

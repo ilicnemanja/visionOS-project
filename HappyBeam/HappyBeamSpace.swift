@@ -39,7 +39,7 @@ struct HappyBeamSpace: View {
             // MARK: Events
             activationSubscription = content.subscribe(to: AccessibilityEvents.Activate.self, on: nil, componentType: nil) { activation in
                 Task {
-                    try handleCloudHit(for: activation.entity, gameModel: gameModel)
+                    try handleBallHit(for: activation.entity, gameModel: gameModel)
                 }
             }
             

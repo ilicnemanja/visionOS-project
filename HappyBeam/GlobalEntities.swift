@@ -26,18 +26,18 @@ struct BundleAssets {
         heartLightEntity = "Heart",
 
         cloud = "Basketball.usdz",
-        cloudScene = "Basketball.usda",
-        cloudEntity = "UpdatedGrumpyScene2",
-        cloudParameterName = "happiness",
+//        cloudScene = "Basketball.usda",
+//        cloudEntity = "UpdatedGrumpyScene2",
+//        cloudParameterName = "happiness",
 
         beamName = "Beam Intermediate",
 
         soccerBall = "Football.usdz",
-        soccerBallScene = "Football.usda",
+//        soccerBallScene = "Football.usda",
 
 
-        nflBall = "Wilson_Football.usdz" ,
-        nflBallScene = "Wilson_Football.usda"
+        nflBall = "Wilson_Football.usdz" 
+//        nflBallScene = "Wilson_Football.usda"
 }
 
 /// The beam entity that's displayed when the player makes a heart gesture.
@@ -55,10 +55,9 @@ var globalFireworks: Entity? = nil
 var globalHeart: Entity? = nil
 var turret: Entity? = nil
 var heart: Entity? = nil
-var cloud: Entity? = nil
 
 /// The clouds in the current round of the game.
-var cloudEntities: [Entity] = []
+var ballEntities: [Entity] = []
 
 /// A map from beam names to entities in multiplayer.
 var multiBeamMap: [String: Entity] = [:]

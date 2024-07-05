@@ -1170,7 +1170,6 @@
       }
     },
     "Cloud" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1237,9 +1236,6 @@
           }
         }
       }
-    },
-    "Entity" : {
-
     },
     "Gather the sports balls by precisely aiming your gestures at the objects." : {
       "comment" : "This text explains the purpose of the game."

@@ -31,9 +31,9 @@ class GameModel {
                         let start = Point3D(child.position)
                         let end = Point3D(
                             start.vector + .init(
-                                x: CloudSpawnParameters.deltaX,
-                                y: CloudSpawnParameters.deltaY,
-                                z: CloudSpawnParameters.deltaZ
+                                x: BallSpawnParameters.deltaX,
+                                y: BallSpawnParameters.deltaY,
+                                z: BallSpawnParameters.deltaZ
                             )
                         )
                         
@@ -41,7 +41,7 @@ class GameModel {
                             name: "line",
                             from: .init(scale: .init(repeating: 1), translation: simd_float(start.vector)),
                             to: .init(scale: .init(repeating: 1), translation: simd_float(end.vector)),
-                            duration: CloudSpawnParameters.speed,
+                            duration: BallSpawnParameters.speed,
                             bindTarget: .transform
                         )
                         
@@ -118,7 +118,7 @@ class GameModel {
     var inputKind: InputKind = .hands
     
     var players = initialPlayers
-    var clouds: [Cloud] = (0..<30).map { Cloud(id: $0, isHappy: false) }
+    var balls: [Ball] = (0..<30).map { Ball(id: $0, isHappy: false) }
     var cloudSounds = [AudioFileResource]()
     
     var isUsingControllerInput = false
@@ -153,11 +153,11 @@ class GameModel {
         Player.localName = players.first!.name
         #endif
         
-        clouds = (0..<30).map { Cloud(id: $0, isHappy: false) }
+        balls = (0..<30).map { Ball(id: $0, isHappy: false) }
         cloudNumber = 0
         hitCounts = [:]
-        cloudIsHit = [:]
-        cloudEntities = []
+        ballIsHit = [:]
+        ballEntities = []
         isUsingControllerInput = false
         controllerX = 0
         controllerY = 90.0
@@ -230,27 +230,27 @@ class GameModel {
 //            cloudAnimations[.sadBlink] = try .generate(with: AnimationView(source: def, trimStart: 1.0, trimEnd: 7.0))
 //            cloudAnimations[.smile] = try .generate(with: AnimationView(source: def, trimStart: 7.5, trimEnd: 10.0))
 //            cloudAnimations[.happyBlink] = try .generate(with: AnimationView(source: def, trimStart: 10.0, trimEnd: 15.0))
-            
-            generateCloudMovementAnimations()
+
+            generateBallMovementAnimations()
             
             self.readyToStart = true
         }
     }
     
     /// Preload animation assets.
-    func generateCloudMovementAnimations() {
-        for index in (0..<cloudPaths.count) {
+    func generateBallMovementAnimations() {
+        for index in (0..<ballPaths.count) {
             let start = Point3D(
-                x: cloudPaths[index].0,
-                y: cloudPaths[index].1,
-                z: cloudPaths[index].2
+                x: ballPaths[index].0,
+                y: ballPaths[index].1,
+                z: ballPaths[index].2
             )
             let end = Point3D(
-                x: start.x + CloudSpawnParameters.deltaX,
-                y: start.y + CloudSpawnParameters.deltaY,
-                z: start.z + CloudSpawnParameters.deltaZ
+                x: start.x + BallSpawnParameters.deltaX,
+                y: start.y + BallSpawnParameters.deltaY,
+                z: start.z + BallSpawnParameters.deltaZ
             )
-            let speed = CloudSpawnParameters.speed
+            let speed = BallSpawnParameters.speed
             
             let line = FromToByAnimation<Transform>(
                 name: "line",
@@ -263,7 +263,7 @@ class GameModel {
             let animation = try! AnimationResource
                 .generate(with: line)
             
-            cloudMovementAnimations.append(animation)
+            ballMovementAnimations.append(animation)
         }
     }
 }

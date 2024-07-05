@@ -58,7 +58,7 @@ struct HappyBeam: View {
                             do {
                                 let spawnAmount = 3
                                 for _ in (0..<spawnAmount) {
-                                    _ = try await spawnCloud()
+                                    _ = try await spawnBall()
                                     try await Task.sleep(for: .milliseconds(300))
                                 }
                                 
@@ -182,7 +182,7 @@ struct HappyBeam: View {
                 // Handle remote scores in multiplayer.
                 Task {
                     for await (message, sender) in sessionInfo!.reliableMessenger!.messages(of: ScoreMessage.self) {
-                        gameModel.clouds[message.cloudID].isHappy = true
+                        gameModel.balls[message.cloudID].isHappy = true
                         gameModel
                             .players
                             .first(where: { $0.name == sender.source.id.asPlayerName })!
@@ -191,7 +191,7 @@ struct HappyBeam: View {
                         print("Adding a score to player ", gameModel.players.first(where: { $0.name == sender.source.id.asPlayerName })!.name)
                         
                         // Show remote score.
-                        try handleCloudHit(for: cloudEntities[message.cloudID], gameModel: gameModel, remote: true)
+                        try handleBallHit(for: ballEntities[message.cloudID], gameModel: gameModel, remote: true)
                     }
                 }
                 

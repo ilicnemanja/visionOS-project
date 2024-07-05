@@ -12,7 +12,7 @@ import SwiftUI
 var hitCounts: [String: Int] = [:]
 
 /// A map that determines whether the beam has collided with a particular cloud this round.
-var cloudIsHit: [String: Bool] = [:]
+var ballIsHit: [String: Bool] = [:]
 
 /// Determines whether a collision is a score or should be ignored.
 @MainActor
@@ -33,33 +33,33 @@ func handleCollisionStart(for event: CollisionEvents.Began, gameModel: GameModel
         return
     }
     
-    guard let cloud = eventHasTarget(event: event, matching: "CCloud") else {
-        print("No cloud found in collision")
+    guard let ball = eventHasTarget(event: event, matching: "CCloud") else {
+        print("No ball found in collision")
         return
     }
     
-    let minCloudHits = 1
+    let minBallHits = 1
     var hitThisTurn = false
-    if hitCounts[cloud.name] == nil {
-        hitCounts[cloud.name] = 0
+    if hitCounts[ball.name] == nil {
+        hitCounts[ball.name] = 0
     }
-    hitCounts[cloud.name]! += 1
+    hitCounts[ball.name]! += 1
     
-    if hitCounts[cloud.name]! >= minCloudHits && cloudIsHit[cloud.name] == nil {
+    if hitCounts[ball.name]! >= minBallHits && ballIsHit[ball.name] == nil {
         hitThisTurn = true
-        cloudIsHit[cloud.name] = true
+        ballIsHit[ball.name] = true
     }
     
     if hitThisTurn == false {
         return
     }
     
-    try handleCloudHit(for: cloud, gameModel: gameModel)
+    try handleBallHit(for: ball, gameModel: gameModel)
 }
 
 /// Animate clouds when they're cheered up by the beam and forward the score during multiplayer.
 @MainActor
-func handleCloudHit(for cloud: Entity, gameModel: GameModel, remote: Bool = false) throws {
+func handleBallHit(for cloud: Entity, gameModel: GameModel, remote: Bool = false) throws {
     gameModel.score += 1
     
     if let localPlayer = gameModel.players.first(where: { $0.name == Player.localName }) {
@@ -96,9 +96,9 @@ func handleCloudHit(for cloud: Entity, gameModel: GameModel, remote: Bool = fals
     }
     
     if remote == false {
-        gameModel.clouds.forEach { cloudInstance in
+        gameModel.balls.forEach { cloudInstance in
             if ("CCloud" + String(cloudInstance.id)) == cloud.name {
-                gameModel.clouds.first(where: { $0.id == cloudInstance.id })?.isHappy = true
+                gameModel.balls.first(where: { $0.id == cloudInstance.id })?.isHappy = true
                 
                 if gameModel.isSharePlaying {
                     sessionInfo?.reliableMessenger?.send(ScoreMessage(cloudID: cloudInstance.id)) { error in
