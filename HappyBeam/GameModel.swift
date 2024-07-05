@@ -207,12 +207,13 @@ class GameModel {
             heart?.position.y += 0.68
             heart?.scale *= 0.22
             heart?.components[InputTargetComponent.self] = InputTargetComponent(allowedInputTypes: .all)
-            
-            cloudTemplate = try? await Entity(named: BundleAssets.cloud)
+
+            basketballBallTemplate = try? await Entity(named: BundleAssets.basketballBall)
             nflBallTemplate = try? await Entity(named: BundleAssets.nflBall)
             soccerBallTemplate = try? await Entity(named: BundleAssets.soccerBall)
+            baseballBallTemplate = try? await Entity(named: BundleAssets.baseballBall)
 
-            guard turret != nil, heart != nil, cloudTemplate != nil, nflBallTemplate != nil, soccerBallTemplate != nil else {
+            guard turret != nil, heart != nil, basketballBallTemplate != nil, nflBallTemplate != nil, soccerBallTemplate != nil, baseballBallTemplate != nil else {
                 fatalError("Error loading assets.")
             }
             

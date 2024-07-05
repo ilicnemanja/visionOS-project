@@ -13,6 +13,7 @@
 		3010078C2C3547F200207683 /* Football.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 3010078B2C3547F200207683 /* Football.usdz */; };
 		3010078E2C358E0200207683 /* happyBeamVictory.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3010078D2C358E0200207683 /* happyBeamVictory.m4a */; };
 		301007902C358E0A00207683 /* happyBeamGameplay.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3010078F2C358E0A00207683 /* happyBeamGameplay.m4a */; };
+		307CA2272C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 307CA2262C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz */; };
 		321A0C13291C02B80042A987 /* HappyBeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321A0C12291C02B80042A987 /* HappyBeamApp.swift */; };
 		321A0C19291C02B90042A987 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 321A0C18291C02B90042A987 /* Assets.xcassets */; };
 		321A0C1C291C02B90042A987 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 321A0C1B291C02B90042A987 /* Preview Assets.xcassets */; };
@@ -52,6 +53,7 @@
 		3010078B2C3547F200207683 /* Football.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Football.usdz; sourceTree = "<group>"; };
 		3010078D2C358E0200207683 /* happyBeamVictory.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = happyBeamVictory.m4a; sourceTree = "<group>"; };
 		3010078F2C358E0A00207683 /* happyBeamGameplay.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = happyBeamGameplay.m4a; sourceTree = "<group>"; };
+		307CA2262C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Worn_Baseball_Ball.usdz; sourceTree = "<group>"; };
 		321A0C0B291C02B80042A987 /* HappyBeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HappyBeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		321A0C12291C02B80042A987 /* HappyBeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyBeamApp.swift; sourceTree = "<group>"; };
 		321A0C18291C02B90042A987 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				301007892C3547EB00207683 /* Wilson_Football.usdz */,
 				3010078B2C3547F200207683 /* Football.usdz */,
 				121C61D22C2F01FF0066C65F /* Basketball.usdz */,
+				307CA2262C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz */,
 				1F82495F2A16EEDA00C2F5D3 /* Cloud2.usdz */,
 				32745A152A02F4C1000035F8 /* UpdatedGrumpyScene2.usdz */,
 				328389172A04203700CD388B /* fireworks.usdz */,
@@ -307,6 +310,7 @@
 				321A0C1C291C02B90042A987 /* Preview Assets.xcassets in Resources */,
 				121C61D32C2F01FF0066C65F /* Basketball.usdz in Resources */,
 				B0CF536A2BF5E560000E4337 /* InfoPlist.xcstrings in Resources */,
+				307CA2272C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz in Resources */,
 				1F8249602A16EEDA00C2F5D3 /* Cloud2.usdz in Resources */,
 				301007902C358E0A00207683 /* happyBeamGameplay.m4a in Resources */,
 				3299370D2A12A8B60073F0B0 /* cloudHit1.m4a in Resources */,

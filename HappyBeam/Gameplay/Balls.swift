@@ -21,9 +21,10 @@ class Ball: Identifiable {
 }
 
 /// The main cloud model; it's cloned when a new cloud spawns.
-var cloudTemplate: Entity? = nil
+var basketballBallTemplate: Entity? = nil
 var nflBallTemplate: Entity? = nil
 var soccerBallTemplate: Entity? = nil
+var baseballBallTemplate: Entity? = nil
 
 
 var cloudNumber = 0
@@ -60,7 +61,7 @@ var ballMovementAnimations: [AnimationResource] = []
 
 /// Randomly selects a template for spawning.
 func getRandomTemplate() -> Entity? {
-    let templates = [cloudTemplate, nflBallTemplate, soccerBallTemplate]
+    let templates = [basketballBallTemplate, nflBallTemplate, soccerBallTemplate, baseballBallTemplate]
     return templates.randomElement() ?? nil
 }
 

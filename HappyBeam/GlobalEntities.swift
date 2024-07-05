@@ -25,19 +25,17 @@ struct BundleAssets {
         heartLightScene = "Heart.usda",
         heartLightEntity = "Heart",
 
-        cloud = "Basketball.usdz",
+        basketballBall = "Basketball.usdz",
+        soccerBall = "Football.usdz",
+        nflBall = "Wilson_Football.usdz",
+        baseballBall = "Worn_Baseball_Ball.usdz",
+    
 //        cloudScene = "Basketball.usda",
 //        cloudEntity = "UpdatedGrumpyScene2",
 //        cloudParameterName = "happiness",
 
-        beamName = "Beam Intermediate",
+        beamName = "Beam Intermediate"
 
-        soccerBall = "Football.usdz",
-//        soccerBallScene = "Football.usda",
-
-
-        nflBall = "Wilson_Football.usdz" 
-//        nflBallScene = "Wilson_Football.usda"
 }
 
 /// The beam entity that's displayed when the player makes a heart gesture.
