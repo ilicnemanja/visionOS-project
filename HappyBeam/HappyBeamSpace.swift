@@ -26,6 +26,8 @@ struct HappyBeamSpace: View {
     @State private var orientations: [simd_quatf] = []
     @State private var collisionSubscription: EventSubscription?
     @State private var activationSubscription: EventSubscription?
+    @State private var initialOrientation: simd_quatf? = nil
+
     
     var collisionEntity = Entity()
     
@@ -35,7 +37,7 @@ struct HappyBeamSpace: View {
             content.add(spaceOrigin)
             content.add(cameraRelativeAnchor)
             spaceOrigin.addChild(beamIntermediate)
-            
+
             // MARK: Events
             activationSubscription = content.subscribe(to: AccessibilityEvents.Activate.self, on: nil, componentType: nil) { activation in
                 Task {
@@ -131,56 +133,62 @@ struct HappyBeamSpace: View {
                 }
             }
         }
-        .gesture(DragGesture(minimumDistance: 0.0)
-            .targetedToAnyEntity()
-            .onChanged { @MainActor drag in
-                let entity = drag.entity
-                guard entity[parentMatching: "Heart Projector"] != nil else { return }
-                
-                if draggedEntity == nil || emittingBeam == false {
-                    draggedEntity = entity
-                    emittingBeam = true
-                    startBlasterBeam(for: entity, beamType: .turret)
-                }
-                
-                emittingBeam = !gameModel.isPaused
-                
-                if !isFloorBeamShowing && !gameModel.isPaused && gameModel.isPlaying {
-                    entity.addChild(floorBeam)
-                    
-                    floorBeam.orientation = simd_quatf(
-                        Rotation3D(angle: .degrees(90), axis: .z)
-                            .rotated(by: .init(angle: .degrees(180), axis: .y))
-                    )
-                    
-                    isFloorBeamShowing = true
-                }
-                
-                // Slow the rotation down.
-                let dragPoint = Point3D(drag.gestureValue.translation3D.vector) / 300
-                let zRotation = (-180 * (dragPoint.x)).clamped(to: -90...90)
-                let yRotation = (-180 * (dragPoint.y)).clamped(to: -90...90)
-            
-                let newOrientation = Rotation3D(angle: .degrees(Double(zRotation)), axis: .z)
-                    .rotated(
-                        by: .init(angle: .degrees(Double(yRotation)), axis: .x)
-                    )
-                
-                entity.orientation = simd_quatf(newOrientation)
-                
-                if gameModel.isSharePlaying {
-                    sendBeamPositionUpdate(Pose3D(entity.transform.matrix)!)
-                }
-            }
-            .onEnded { dragEnd in
-                if !gameModel.isPaused {
-                    floorBeam.removeFromParent()
-                    isFloorBeamShowing = false
-                    globalHeart?.children[0].transform.rotation = .init()
-                }
-                endBlasterBeam()
-            }
-        )
+                .gesture(
+                        DragGesture(minimumDistance: 0.0)
+                                .targetedToAnyEntity()
+                                .onChanged { @MainActor drag in
+                                    let entity = drag.entity
+                                    guard let moneyGun = moneyGun, entity[parentMatching: "MoneyGun"] != nil else { return }
+
+                                    if draggedEntity == nil || emittingBeam == false {
+                                        draggedEntity = moneyGun
+                                        emittingBeam = true
+                                        startBlasterBeam(for: moneyGun, beamType: .turret)
+
+                                        // Store the initial orientation when the gesture starts
+                                        initialOrientation = moneyGun.orientation
+                                    }
+
+                                    emittingBeam = !gameModel.isPaused
+
+                                    if !isFloorBeamShowing && !gameModel.isPaused && gameModel.isPlaying {
+                                        moneyGun.addChild(floorBeam)
+
+                                        floorBeam.orientation = simd_quatf(
+                                                Rotation3D(angle: .degrees(90), axis: .z)
+                                                        .rotated(by: .init(angle: .degrees(180), axis: .y))
+                                        )
+
+                                        isFloorBeamShowing = true
+                                    }
+
+                                    let dragPoint = Point3D(drag.gestureValue.translation3D.vector) / 300
+                                    let zRotation = (-180 * (dragPoint.x)).clamped(to: -90...90)
+                                    let yRotation = (-180 * (dragPoint.y)).clamped(to: -90...90)
+
+                                    // Calculate the incremental rotation
+                                    let incrementalRotation = Rotation3D(angle: .degrees(Double(zRotation)), axis: .z)
+                                            .rotated(by: .init(angle: .degrees(Double(yRotation)), axis: .x))
+
+                                    // Apply the incremental rotation to the initial orientation
+                                    if let initialOrientation = initialOrientation {
+                                        moneyGun.orientation = initialOrientation * simd_quatf(incrementalRotation)
+                                    }
+
+                                    if gameModel.isSharePlaying {
+                                        sendBeamPositionUpdate(Pose3D(moneyGun.transform.matrix)!)
+                                    }
+                                }
+                                .onEnded { dragEnd in
+                                    if !gameModel.isPaused {
+                                        floorBeam.removeFromParent()
+                                        isFloorBeamShowing = false
+                                        globalMoneyGun?.children[0].transform.rotation = .init()
+                                    }
+                                    endBlasterBeam()
+                                }
+                )
+           
         .task {
             await gestureModel.start()
         }
@@ -229,7 +237,7 @@ struct HappyBeamSpace: View {
             draggedEntity = entity
             while emittingBeam == true {
                 let elapsedTime = Date.timeIntervalSinceReferenceDate - lastGestureUpdateTime
-                
+
                 collisionEntity.removeFromParent()
                 collisionEntity.name = collisionEntityName
                 var root = entity
@@ -246,7 +254,7 @@ struct HappyBeamSpace: View {
                     let collisionComp = CollisionComponent(shapes: [collisionShape])
                     collisionEntity.components.set(collisionComp)
                 }
-                
+
                 blasterPosition += Float(elapsedTime) * 1.5
                 blasterPosition -= floorf(blasterPosition)
                 entity.setMaterialParameterValues(parameter: HappyBeamAssets.beamPositionParameterName, value: .float(blasterPosition))
@@ -254,7 +262,7 @@ struct HappyBeamSpace: View {
                 let offsetVector: SIMD3<Float> = (beamType == .turret)
                     ? [0, 1, 0] * offset * blasterPosition
                     : [1, 0, 0] * offset * blasterPosition
-                
+
                 collisionEntity.setPosition(offsetVector, relativeTo: entity)
 
                 lastGestureUpdateTime = Date.timeIntervalSinceReferenceDate
@@ -275,20 +283,20 @@ struct HappyBeamSpace: View {
             #endif
             gameModel.controllerX += gameModel.controllerInputX * speed
             gameModel.controllerY -= gameModel.controllerInputY * speed
-            
-            let heart = globalHeart!
+
+            let moneyGun = globalMoneyGun!
             if !isFloorBeamShowing && (gameModel.controllerInputX != 0.0 || gameModel.controllerInputX != 0.0) {
-                heart.addChild(floorBeam)
+                moneyGun.addChild(floorBeam)
                 emittingBeam = true
-                startBlasterBeam(for: heart, beamType: .turret)
+                startBlasterBeam(for: moneyGun, beamType: .turret)
                 floorBeam.orientation = simd_quatf(
                     Rotation3D(angle: .degrees(90), axis: .z)
                         .rotated(by: .init(angle: .degrees(180), axis: .y))
                 )
                 isFloorBeamShowing = true
             }
-            
-            heart.orientation = simd_quatf(
+
+            moneyGun.orientation = simd_quatf(
                 Rotation3D(angle: .degrees(Double(-gameModel.controllerX)), axis: .z)
                     .rotated(by: .init(angle: .degrees(Double(-gameModel.controllerY)), axis: .x))
             )
@@ -299,7 +307,7 @@ struct HappyBeamSpace: View {
 
             gameModel.controllerDismissTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { _ in
                 Task { @MainActor in
-                    heart.removeChild(floorBeam)
+                    moneyGun.removeChild(floorBeam)
                     isFloorBeamShowing = false
                     endBlasterBeam()
                 }
@@ -333,19 +341,17 @@ var isShowingBeam = false {
 
 var lastHeartDetectionTime = Date.timeIntervalSinceReferenceDate
 
-/// Adds the purple base and golden heart models when someone picks an input mode that requires them.
+/// Adds the money gun model when someone picks an input mode that requires them.
 @MainActor
 func addFloorBeamMaterials() async throws {
     guard
-        let turret = turret,
-        let heart = heart
+        let moneyGun = moneyGun
     else {
         fatalError("Required assets are nil.")
     }
-    
-    globalHeart = heart
-    spaceOrigin.addChild(turret)
-    spaceOrigin.addChild(heart)
+
+    globalMoneyGun = moneyGun
+    spaceOrigin.addChild(moneyGun)
 }
 
 /// Loads assets from the local HappyBeamAssets package.

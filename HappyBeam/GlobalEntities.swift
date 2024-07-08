@@ -19,11 +19,13 @@ struct BundleAssets {
         heartBlasterScene = "HeartBlaster.usda",
         heartBlasterEntity = "HeartBeam",
 
-        heartTurretScene = "HeartTurret.usda",
-        heartTurretEntity = "heartTurret",
+//        heartTurretScene = "HeartTurret.usda",
+//        heartTurretEntity = "heartTurret",
 
         heartLightScene = "Heart.usda",
         heartLightEntity = "Heart",
+
+        moneyGunAsset = "Supreme_Money_Gun.usdz",
 
         basketballBall = "Basketball.usdz",
         soccerBall = "Football.usdz",
@@ -50,9 +52,11 @@ var isFloorBeamShowing = false
 
 // Containers for assets used throughout the game.
 var globalFireworks: Entity? = nil
-var globalHeart: Entity? = nil
-var turret: Entity? = nil
-var heart: Entity? = nil
+//var globalHeart: Entity? = nil
+//var turret: Entity? = nil
+//var heart: Entity? = nil
+var globalMoneyGun: Entity? = nil
+var moneyGun: Entity? = nil
 
 /// The clouds in the current round of the game.
 var ballEntities: [Entity] = []

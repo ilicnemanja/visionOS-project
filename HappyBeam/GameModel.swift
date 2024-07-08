@@ -195,25 +195,33 @@ class GameModel {
             let fireworks = try await Entity(named: "fireworks")
             globalFireworks = fireworks.children.first!.children.first!
             
-            turret = await loadFromRealityComposerPro(named: BundleAssets.heartTurretEntity, fromSceneNamed: BundleAssets.heartTurretScene)
-            turret?.name = "Holder"
-            turret?.position = .init(x: 0, y: 0.25, z: -1.7)
-            turret?.scale *= 0.3
-            
-            heart = await loadFromRealityComposerPro(named: BundleAssets.heartLightEntity, fromSceneNamed: BundleAssets.heartLightScene)
-            heart?.name = "Heart Projector"
-            heart?.generateCollisionShapes(recursive: true)
-            heart?.position = .init(x: 0, y: 0.25, z: -1.7)
-            heart?.position.y += 0.68
-            heart?.scale *= 0.22
-            heart?.components[InputTargetComponent.self] = InputTargetComponent(allowedInputTypes: .all)
+//            turret = await loadFromRealityComposerPro(named: BundleAssets.heartTurretEntity, fromSceneNamed: BundleAssets.heartTurretScene)
+//            turret?.name = "Holder"
+//            turret?.position = .init(x: 0, y: 0.25, z: -1.7)
+//            turret?.scale *= 0.3
+//
+//            heart = await loadFromRealityComposerPro(named: BundleAssets.heartLightEntity, fromSceneNamed: BundleAssets.heartLightScene)
+//            heart?.name = "Heart Projector"
+//            heart?.generateCollisionShapes(recursive: true)
+//            heart?.position = .init(x: 0, y: 0.25, z: -1.7)
+//            heart?.position.y += 0.68
+//            heart?.scale *= 0.22
+//            heart?.components[InputTargetComponent.self] = InputTargetComponent(allowedInputTypes: .all)
+
+            moneyGun = try? await Entity(named: BundleAssets.moneyGunAsset)
+            moneyGun?.name = "MoneyGun"
+            moneyGun?.generateCollisionShapes(recursive: true)
+            moneyGun?.position = .init(x: 0, y: 0.8, z: -1.7)
+            moneyGun?.scale *= 5
+            moneyGun?.components[InputTargetComponent.self] = InputTargetComponent(allowedInputTypes: .all)
+            moneyGun?.orientation = simd_quatf(angle: -.pi / 2, axis: SIMD3<Float>(0, 1, 0))
 
             basketballBallTemplate = try? await Entity(named: BundleAssets.basketballBall)
             nflBallTemplate = try? await Entity(named: BundleAssets.nflBall)
             soccerBallTemplate = try? await Entity(named: BundleAssets.soccerBall)
             baseballBallTemplate = try? await Entity(named: BundleAssets.baseballBall)
 
-            guard turret != nil, heart != nil, basketballBallTemplate != nil, nflBallTemplate != nil, soccerBallTemplate != nil, baseballBallTemplate != nil else {
+            guard moneyGun != nil, basketballBallTemplate != nil, nflBallTemplate != nil, soccerBallTemplate != nil, baseballBallTemplate != nil else {
                 fatalError("Error loading assets.")
             }
             
