@@ -137,3 +137,10 @@ extension SIMD4 {
     }
 }
 
+extension float4x4 {
+    func transformPoint(_ point: SIMD3<Float>) -> SIMD3<Float> {
+        let vector = SIMD4<Float>(point.x, point.y, point.z, 1.0)
+        let transformedVector = self * vector
+        return SIMD3<Float>(transformedVector.x, transformedVector.y, transformedVector.z)
+    }
+}

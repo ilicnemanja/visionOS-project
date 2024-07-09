@@ -186,6 +186,7 @@ class GameModel {
             beam.orientation = simd_quatf(
                 Rotation3D(angle: .degrees(90), axis: .y)
                     .rotated(by: Rotation3D(angle: .degrees(-90), axis: .z))
+                            .rotated(by: Rotation3D(angle: .degrees(-90), axis: .x))
             )
             
             floorBeam = beam.clone(recursive: true)
@@ -212,9 +213,8 @@ class GameModel {
             moneyGun?.name = "MoneyGun"
             moneyGun?.generateCollisionShapes(recursive: true)
             moneyGun?.position = .init(x: 0, y: 0.8, z: -1.7)
-            moneyGun?.scale *= 5
+            moneyGun?.scale *= 0.1
             moneyGun?.components[InputTargetComponent.self] = InputTargetComponent(allowedInputTypes: .all)
-            moneyGun?.orientation = simd_quatf(angle: -.pi / 2, axis: SIMD3<Float>(0, 1, 0))
 
             basketballBallTemplate = try? await Entity(named: BundleAssets.basketballBall)
             nflBallTemplate = try? await Entity(named: BundleAssets.nflBall)

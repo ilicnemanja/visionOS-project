@@ -25,7 +25,7 @@ struct BundleAssets {
         heartLightScene = "Heart.usda",
         heartLightEntity = "Heart",
 
-        moneyGunAsset = "Supreme_Money_Gun.usdz",
+        moneyGunAsset = "gun.usdz",
 
         basketballBall = "Basketball.usdz",
         soccerBall = "Football.usdz",

@@ -26,7 +26,6 @@ struct HappyBeamSpace: View {
     @State private var orientations: [simd_quatf] = []
     @State private var collisionSubscription: EventSubscription?
     @State private var activationSubscription: EventSubscription?
-    @State private var initialOrientation: simd_quatf? = nil
 
     
     var collisionEntity = Entity()
@@ -144,9 +143,6 @@ struct HappyBeamSpace: View {
                                         draggedEntity = moneyGun
                                         emittingBeam = true
                                         startBlasterBeam(for: moneyGun, beamType: .turret)
-
-                                        // Store the initial orientation when the gesture starts
-                                        initialOrientation = moneyGun.orientation
                                     }
 
                                     emittingBeam = !gameModel.isPaused
@@ -157,23 +153,21 @@ struct HappyBeamSpace: View {
                                         floorBeam.orientation = simd_quatf(
                                                 Rotation3D(angle: .degrees(90), axis: .z)
                                                         .rotated(by: .init(angle: .degrees(180), axis: .y))
+                                                        .rotated(by: Rotation3D(angle: .degrees(-90), axis: .x))
                                         )
-
                                         isFloorBeamShowing = true
                                     }
 
                                     let dragPoint = Point3D(drag.gestureValue.translation3D.vector) / 300
-                                    let zRotation = (-180 * (dragPoint.x)).clamped(to: -90...90)
+                                    let xRotation = (-180 * (dragPoint.x)).clamped(to: -90...90)
                                     let yRotation = (-180 * (dragPoint.y)).clamped(to: -90...90)
 
-                                    // Calculate the incremental rotation
-                                    let incrementalRotation = Rotation3D(angle: .degrees(Double(zRotation)), axis: .z)
-                                            .rotated(by: .init(angle: .degrees(Double(yRotation)), axis: .x))
+                                    let newOrientation = Rotation3D(angle: .degrees(Double(xRotation)), axis: .y)
+                                            .rotated(
+                                                    by: .init(angle: .degrees(Double(yRotation)), axis: .x)
+                                            )
 
-                                    // Apply the incremental rotation to the initial orientation
-                                    if let initialOrientation = initialOrientation {
-                                        moneyGun.orientation = initialOrientation * simd_quatf(incrementalRotation)
-                                    }
+                                    moneyGun.orientation = simd_quatf(newOrientation)
 
                                     if gameModel.isSharePlaying {
                                         sendBeamPositionUpdate(Pose3D(moneyGun.transform.matrix)!)
@@ -253,6 +247,10 @@ struct HappyBeamSpace: View {
                     let collisionShape = ShapeResource.generateSphere(radius: radius)
                     let collisionComp = CollisionComponent(shapes: [collisionShape])
                     collisionEntity.components.set(collisionComp)
+
+//                    let model = ModelEntity(mesh: .generateSphere(radius: radius))
+//                    model.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
+//                    collisionEntity.addChild(model)
                 }
 
                 blasterPosition += Float(elapsedTime) * 1.5
@@ -263,8 +261,10 @@ struct HappyBeamSpace: View {
                     ? [0, 1, 0] * offset * blasterPosition
                     : [1, 0, 0] * offset * blasterPosition
 
-                collisionEntity.setPosition(offsetVector, relativeTo: entity)
+                let rotationMatrix = float4x4(simd_quatf(angle: -Float.pi / 2, axis: SIMD3<Float>(1, 0, 0)))
+                let rotatedOffsetVector = rotationMatrix.transformPoint(offsetVector)
 
+                collisionEntity.setPosition(rotatedOffsetVector, relativeTo: entity)
                 lastGestureUpdateTime = Date.timeIntervalSinceReferenceDate
                 try? await Task.sleep(for: .milliseconds(66.666_666))
             }
