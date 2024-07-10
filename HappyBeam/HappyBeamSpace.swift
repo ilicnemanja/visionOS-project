@@ -132,57 +132,56 @@ struct HappyBeamSpace: View {
                 }
             }
         }
-                .gesture(
-                        DragGesture(minimumDistance: 0.0)
-                                .targetedToAnyEntity()
-                                .onChanged { @MainActor drag in
-                                    let entity = drag.entity
-                                    guard let moneyGun = moneyGun, entity[parentMatching: "MoneyGun"] != nil else { return }
+        .gesture(
+            DragGesture(minimumDistance: 0.0)
+                .targetedToAnyEntity()
+                .onChanged { @MainActor drag in
+                    let entity = drag.entity
+                    guard let moneyGun = moneyGun, entity[parentMatching: "MoneyGun"] != nil else { return }
 
-                                    if draggedEntity == nil || emittingBeam == false {
-                                        draggedEntity = moneyGun
-                                        emittingBeam = true
-                                        startBlasterBeam(for: moneyGun, beamType: .turret)
-                                    }
+                    if draggedEntity == nil || emittingBeam == false {
+                        draggedEntity = moneyGun
+                        emittingBeam = true
+                        startBlasterBeam(for: moneyGun, beamType: .turret)
+                    }
 
-                                    emittingBeam = !gameModel.isPaused
+                    emittingBeam = !gameModel.isPaused
 
-                                    if !isFloorBeamShowing && !gameModel.isPaused && gameModel.isPlaying {
-                                        moneyGun.addChild(floorBeam)
+                    if !isFloorBeamShowing && !gameModel.isPaused && gameModel.isPlaying {
+                        moneyGun.addChild(floorBeam)
 
-                                        floorBeam.orientation = simd_quatf(
-                                                Rotation3D(angle: .degrees(90), axis: .z)
-                                                        .rotated(by: .init(angle: .degrees(180), axis: .y))
-                                                        .rotated(by: Rotation3D(angle: .degrees(-90), axis: .x))
-                                        )
-                                        isFloorBeamShowing = true
-                                    }
+                        floorBeam.orientation = simd_quatf(
+                                Rotation3D(angle: .degrees(90), axis: .z)
+                                        .rotated(by: .init(angle: .degrees(180), axis: .y))
+                                        .rotated(by: Rotation3D(angle: .degrees(-90), axis: .x))
+                        )
+                        isFloorBeamShowing = true
+                    }
 
-                                    let dragPoint = Point3D(drag.gestureValue.translation3D.vector) / 300
-                                    let xRotation = (-180 * (dragPoint.x)).clamped(to: -90...90)
-                                    let yRotation = (-180 * (dragPoint.y)).clamped(to: -90...90)
+                    let dragPoint = Point3D(drag.gestureValue.translation3D.vector) / 300
+                    let xRotation = (-180 * (dragPoint.x)).clamped(to: -90...90)
+                    let yRotation = (-180 * (dragPoint.y)).clamped(to: -90...90)
 
-                                    let newOrientation = Rotation3D(angle: .degrees(Double(xRotation)), axis: .y)
-                                            .rotated(
-                                                    by: .init(angle: .degrees(Double(yRotation)), axis: .x)
-                                            )
+                    let newOrientation = Rotation3D(angle: .degrees(Double(xRotation)), axis: .y)
+                            .rotated(
+                                    by: .init(angle: .degrees(Double(yRotation)), axis: .x)
+                            )
 
-                                    moneyGun.orientation = simd_quatf(newOrientation)
+                    moneyGun.orientation = simd_quatf(newOrientation)
 
-                                    if gameModel.isSharePlaying {
-                                        sendBeamPositionUpdate(Pose3D(moneyGun.transform.matrix)!)
-                                    }
-                                }
-                                .onEnded { dragEnd in
-                                    if !gameModel.isPaused {
-                                        floorBeam.removeFromParent()
-                                        isFloorBeamShowing = false
-                                        globalMoneyGun?.children[0].transform.rotation = .init()
-                                    }
-                                    endBlasterBeam()
-                                }
-                )
-           
+                    if gameModel.isSharePlaying {
+                        sendBeamPositionUpdate(Pose3D(moneyGun.transform.matrix)!)
+                    }
+                }
+                .onEnded { dragEnd in
+                    if !gameModel.isPaused {
+                        floorBeam.removeFromParent()
+                        isFloorBeamShowing = false
+                        globalMoneyGun?.children[0].transform.rotation = .init()
+                    }
+                    endBlasterBeam()
+                }
+            )
         .task {
             await gestureModel.start()
         }
