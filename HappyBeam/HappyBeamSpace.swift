@@ -247,23 +247,20 @@ struct HappyBeamSpace: View {
                     let collisionComp = CollisionComponent(shapes: [collisionShape])
                     collisionEntity.components.set(collisionComp)
 
-//                    let model = ModelEntity(mesh: .generateSphere(radius: radius))
-//                    model.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
-//                    collisionEntity.addChild(model)
+                    let model = ModelEntity(mesh: .generateSphere(radius: radius))
+                    model.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
+                    collisionEntity.addChild(model)
                 }
 
                 blasterPosition += Float(elapsedTime) * 1.5
                 blasterPosition -= floorf(blasterPosition)
                 entity.setMaterialParameterValues(parameter: HappyBeamAssets.beamPositionParameterName, value: .float(blasterPosition))
                 let offset: Float = (beamType == .turret) ? 23 : 1400
-                let offsetVector: SIMD3<Float> = (beamType == .turret)
-                    ? [0, 1, 0] * offset * blasterPosition
-                    : [1, 0, 0] * offset * blasterPosition
+                var offsetVector: SIMD3<Float> = (beamType == .turret)
+                        ? (float4x4(simd_quatf(angle: -Float.pi / 2, axis: SIMD3<Float>(1, 0, 0)))).transformPoint([0, 1, 0] * offset * blasterPosition)
+                        : [1, 0, 0] * offset * blasterPosition
 
-                let rotationMatrix = float4x4(simd_quatf(angle: -Float.pi / 2, axis: SIMD3<Float>(1, 0, 0)))
-                let rotatedOffsetVector = rotationMatrix.transformPoint(offsetVector)
-
-                collisionEntity.setPosition(rotatedOffsetVector, relativeTo: entity)
+                collisionEntity.setPosition(offsetVector, relativeTo: entity)
                 lastGestureUpdateTime = Date.timeIntervalSinceReferenceDate
                 try? await Task.sleep(for: .milliseconds(66.666_666))
             }
