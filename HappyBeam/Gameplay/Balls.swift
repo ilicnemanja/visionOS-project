@@ -159,7 +159,7 @@ func spawnBallExact(start: Point3D, end: Point3D, speed: Double) async throws ->
     ball.setMaterialParameterValues(parameter: "saturation", value: .float(0.0))
     ball.setMaterialParameterValues(parameter: "animate_texture", value: .bool(false))
 
-    cloudAnimate(ball, kind: .sadBlink, shouldRepeat: false)
+    //cloudAnimate(ball, kind: .sadBlink, shouldRepeat: false)
 
     spaceOrigin.addChild(ball)
 

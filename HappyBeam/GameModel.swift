@@ -259,12 +259,16 @@ class GameModel {
                 y: start.y + BallSpawnParameters.deltaY,
                 z: start.z + BallSpawnParameters.deltaZ
             )
+            
+            let startRotation = simd_quatf(angle: 0, axis: SIMD3<Float>(0, 1.0, 0))
+            let endRotation = simd_quatf(angle: .pi, axis: SIMD3<Float>(0, 1.0, 0))
+            
             let speed = BallSpawnParameters.speed
             
             let line = FromToByAnimation<Transform>(
                 name: "line",
-                from: .init(scale: .init(repeating: 0.005), translation: simd_float(start.vector)),
-                to: .init(scale: .init(repeating: 0.005), translation: simd_float(end.vector)),
+                from: .init(scale: .init(repeating: 0.005), rotation: startRotation, translation: simd_float(start.vector)),
+                to: .init(scale: .init(repeating: 0.005), rotation: endRotation, translation: simd_float(end.vector)),
                 duration: speed,
                 bindTarget: .transform
             )
