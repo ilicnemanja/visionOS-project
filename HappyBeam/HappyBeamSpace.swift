@@ -86,8 +86,11 @@ struct HappyBeamSpace: View {
                 }
             }
         } update: { updateContent in
+            let moneyGun = globalMoneyGun!
+
             let handsCenterTransform = gestureModel.computeTransformOfUserPerformedHeartGesture()
             if let handsCenter = handsCenterTransform {
+
                 let position = Pose3D(handsCenter)!.position
                 let rotation = Pose3D(handsCenter)!.rotation
                 
@@ -104,9 +107,9 @@ struct HappyBeamSpace: View {
                 
                 wIndex += 1
                 wIndex %= windowSize
-                
-                beamIntermediate.transform.translation = SIMD3<Float>(position.vector)
-                beamIntermediate.transform.rotation = simd_quatf(vector: [Float(averageX), Float(averageY), Float(averageZ), Float(averageW)])
+                                
+                moneyGun.transform.translation = SIMD3<Float>(position.vector)
+                moneyGun.transform.rotation = simd_quatf(vector: [Float(averageX), Float(averageY), Float(averageZ), Float(averageW)])
                 lastHeartDetectionTime = Date.timeIntervalSinceReferenceDate
                 
                 if gameModel.isSharePlaying {
@@ -118,7 +121,7 @@ struct HappyBeamSpace: View {
             if !gameModel.isPaused && gameModel.isPlaying {
                 if shouldShowBeam {
                     if isShowingBeam == false {
-                        beamIntermediate.addChild(beam)
+                        moneyGun.addChild(beam)
                         startBlasterBeam(for: beam, beamType: .gesture)
                     }
                     isShowingBeam = true
@@ -126,7 +129,7 @@ struct HappyBeamSpace: View {
                 } else if !shouldShowBeam && isShowingBeam == true {
                     if Date.timeIntervalSinceReferenceDate > lastHeartDetectionTime + 0.1 {
                         isShowingBeam = false
-                        beamIntermediate.removeChild(beam)
+                        moneyGun.removeChild(beam)
                         endBlasterBeam()
                     }
                 }
@@ -256,7 +259,7 @@ struct HappyBeamSpace: View {
                 blasterPosition -= floorf(blasterPosition)
                 entity.setMaterialParameterValues(parameter: HappyBeamAssets.beamPositionParameterName, value: .float(blasterPosition))
                 let offset: Float = (beamType == .turret) ? 23 : 1400
-                var offsetVector: SIMD3<Float> = (beamType == .turret)
+                let offsetVector: SIMD3<Float> = (beamType == .turret)
                         ? (float4x4(simd_quatf(angle: -Float.pi / 2, axis: SIMD3<Float>(1, 0, 0)))).transformPoint([0, 1, 0] * offset * blasterPosition)
                         : [1, 0, 0] * offset * blasterPosition
 

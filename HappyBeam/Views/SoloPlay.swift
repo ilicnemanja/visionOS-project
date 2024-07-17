@@ -93,13 +93,7 @@ struct SoloPlay: View {
         .frame(width: 260)
         .task {
             do {
-                #if targetEnvironment(simulator)
-                let shouldAddProjector = true
-                #else
-                let shouldAddProjector = gameModel.inputKind == .alternative
-                #endif
-
-                if shouldAddProjector, moneyGun != nil {
+                if moneyGun != nil {
                     try await addFloorBeamMaterials()
                 }
             } catch {
