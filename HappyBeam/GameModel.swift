@@ -217,7 +217,7 @@ class GameModel {
             #if targetEnvironment(simulator)
             let moneyGunDraggable = true
             #else
-            let moneyGunDraggable = gameModel.inputKind == .alternative
+            let moneyGunDraggable = inputKind == .alternative
             #endif
             if moneyGunDraggable {
                 moneyGun?.generateCollisionShapes(recursive: true)
