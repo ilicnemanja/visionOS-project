@@ -259,9 +259,7 @@ struct HappyBeamSpace: View {
                 blasterPosition -= floorf(blasterPosition)
                 entity.setMaterialParameterValues(parameter: HappyBeamAssets.beamPositionParameterName, value: .float(blasterPosition))
                 let offset: Float = (beamType == .turret) ? 23 : 1400
-                let offsetVector: SIMD3<Float> = (beamType == .turret)
-                        ? (float4x4(simd_quatf(angle: -Float.pi / 2, axis: SIMD3<Float>(1, 0, 0)))).transformPoint([0, 1, 0] * offset * blasterPosition)
-                        : [1, 0, 0] * offset * blasterPosition
+                let offsetVector = (float4x4(simd_quatf(angle: -Float.pi / 2, axis: SIMD3<Float>(1, 0, 0)))).transformPoint([0, 1, 0] * offset * blasterPosition)
 
                 collisionEntity.setPosition(offsetVector, relativeTo: entity)
                 lastGestureUpdateTime = Date.timeIntervalSinceReferenceDate
