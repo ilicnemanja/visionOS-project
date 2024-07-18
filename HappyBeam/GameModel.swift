@@ -211,10 +211,18 @@ class GameModel {
 
             moneyGun = try? await Entity(named: BundleAssets.moneyGunAsset)
             moneyGun?.name = "MoneyGun"
-            moneyGun?.generateCollisionShapes(recursive: true)
             moneyGun?.position = .init(x: 0, y: 0.8, z: -1.7)
             moneyGun?.scale *= 0.1
-            moneyGun?.components[InputTargetComponent.self] = InputTargetComponent(allowedInputTypes: .all)
+
+            #if targetEnvironment(simulator)
+            let moneyGunDraggable = true
+            #else
+            let moneyGunDraggable = gameModel.inputKind == .alternative
+            #endif
+            if moneyGunDraggable {
+                moneyGun?.generateCollisionShapes(recursive: true)
+                moneyGun?.components[InputTargetComponent.self] = InputTargetComponent(allowedInputTypes: .all)
+            }
 
             basketballBallTemplate = try? await Entity(named: BundleAssets.basketballBall)
             nflBallTemplate = try? await Entity(named: BundleAssets.nflBall)
