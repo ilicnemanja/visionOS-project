@@ -103,34 +103,6 @@ func getNewStartPosition() -> Point3D {
 /// Places a cloud in the scene and sets it on a set journey.
 @MainActor
 func spawnBallExact(start: Point3D, end: Point3D, speed: Double) async throws -> Entity {
-//    if cloudTemplate == nil {
-//        guard let cloud = await loadFromRealityComposerPro(
-//                named: BundleAssets.cloudEntity,
-//                fromSceneNamed: BundleAssets.cloudScene
-//        ) else {
-//            fatalError("Error loading cloud from Reality Composer Pro project.")
-//        }
-//        cloudTemplate = cloud
-//    }
-//    if nflBallTemplate == nil {
-//        guard let nflBall = await loadFromRealityComposerPro(
-//                named: BundleAssets.nflBall,
-//                fromSceneNamed: BundleAssets.nflBallScene
-//        ) else {
-//            fatalError("Error loading nflBall from Reality Composer Pro project.")
-//        }
-//        nflBallTemplate = nflBall
-//    }
-//    if soccerBallTemplate == nil {
-//        guard let soccerBall = await loadFromRealityComposerPro(
-//                named: BundleAssets.soccerBall,
-//                fromSceneNamed: BundleAssets.soccerBallScene
-//        ) else {
-//            fatalError("Error loading soccerBall from Reality Composer Pro project.")
-//        }
-//        soccerBallTemplate = soccerBall
-//    }
-
     guard let selectedTemplate = getRandomTemplate() else {
         fatalError("No template selected.")
     }
@@ -141,10 +113,14 @@ func spawnBallExact(start: Point3D, end: Point3D, speed: Double) async throws ->
     cloudNumber += 1
 
     ball.components[PhysicsBodyComponent.self] = PhysicsBodyComponent()
-//    ball.scale = .init(repeating: 0.001)
 
     ball.position = simd_float(start.vector + .init(x: 0, y: 0, z: -0.7))
-
+    
+    if doesIntersect(newEntity: ball, start: start) {
+        print("Intersection detected. Skipping spawn.")
+        return try await spawnBallExact(start: getNewStartPosition(), end: end, speed: speed)
+    }
+    
     var accessibilityComponent = AccessibilityComponent()
     accessibilityComponent.label = "Cloud"
     accessibilityComponent.value = "Grumpy"
@@ -159,12 +135,11 @@ func spawnBallExact(start: Point3D, end: Point3D, speed: Double) async throws ->
     ball.setMaterialParameterValues(parameter: "saturation", value: .float(0.0))
     ball.setMaterialParameterValues(parameter: "animate_texture", value: .bool(false))
 
-    //cloudAnimate(ball, kind: .sadBlink, shouldRepeat: false)
-
     spaceOrigin.addChild(ball)
-
+    
     return ball
 }
+
 
 /// Describes the 3D scene relative to the player.
 func postCloudOverviewAnnouncement(gameModel: GameModel) {
@@ -262,29 +237,6 @@ func postCloudOverviewAnnouncement(gameModel: GameModel) {
     }
     
     AccessibilityNotification.Announcement(cloudPositioningAnnouncement).post()
-}
-
-/// Plays one of the cloud animations on the cloud you specify.
-@MainActor func cloudAnimate(_ cloud: Entity, kind: CloudAnimations, shouldRepeat: Bool) {
-//    guard let animation = cloudAnimations[kind] else {
-//        fatalError("Tried to load an animation that doesn't exist: \(kind)")
-//    }
-//    
-//    if shouldRepeat {
-//        cloud.playAnimation(animation.repeat(count: 100))
-//    } else {
-//        cloud.playAnimation(animation)
-//    }
-}
-
-/// A map from a kind of animation to the animation resource that contains that animation.
-var cloudAnimations: [CloudAnimations: AnimationResource] = [:]
-
-/// The available animations inside the cloud asset.
-enum CloudAnimations {
-    case sadBlink
-    case smile
-    case happyBlink
 }
 
 /// Cloud spawn parameters (in meters).

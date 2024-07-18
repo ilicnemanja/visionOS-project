@@ -220,6 +220,11 @@ class GameModel {
             nflBallTemplate = try? await Entity(named: BundleAssets.nflBall)
             soccerBallTemplate = try? await Entity(named: BundleAssets.soccerBall)
             baseballBallTemplate = try? await Entity(named: BundleAssets.baseballBall)
+            
+            scaleTemplate(basketballBallTemplate, to: SIMD3<Float>(0.24, 0.24, 0.24))
+            scaleTemplate(nflBallTemplate, to: SIMD3<Float>(0.56, 0.28, 0.28))
+            scaleTemplate(soccerBallTemplate, to: SIMD3<Float>(0.22, 0.22, 0.22))
+            scaleTemplate(baseballBallTemplate, to: SIMD3<Float>(0.074, 0.074, 0.074))
 
             guard moneyGun != nil, basketballBallTemplate != nil, nflBallTemplate != nil, soccerBallTemplate != nil, baseballBallTemplate != nil else {
                 fatalError("Error loading assets.")
@@ -244,6 +249,22 @@ class GameModel {
             
             self.readyToStart = true
         }
+    }
+    
+    func scaleTemplate(_ template: Entity?, to realSize: SIMD3<Float>) {
+        guard let template = template else { return }
+        
+        template.generateCollisionShapes(recursive: true)
+        let templateBounds = template.visualBounds(relativeTo: nil)
+        let templateSize = templateBounds.extents
+
+        let scaleCoefficient = SIMD3<Float>(
+            realSize.x / templateSize.x,
+            realSize.y / templateSize.y,
+            realSize.z / templateSize.z
+        )
+
+        template.scale *= scaleCoefficient
     }
     
     /// Preload animation assets.
