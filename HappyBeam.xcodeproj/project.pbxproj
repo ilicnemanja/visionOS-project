@@ -44,16 +44,18 @@
 		B0B8C3EA2BDC363900704A2C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B0B8C3E92BDC363900704A2C /* Localizable.xcstrings */; };
 		B0CF536A2BF5E560000E4337 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B0CF53692BF5E560000E4337 /* InfoPlist.xcstrings */; };
 		D276FF7F2C32A5B4003727BB /* happyBeamMenu.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D276FF7E2C32A5AB003727BB /* happyBeamMenu.m4a */; };
+		D2A5DD6E2C49546A008F00AE /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A5DD6D2C49546A008F00AE /* LeaderboardService.swift */; };
+		D2A9DBC92C494FA500EBBEFE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D2A9DBC82C494FA500EBBEFE /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		121C61D22C2F01FF0066C65F /* Basketball.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Basketball.usdz; sourceTree = "<group>"; };
 		1F82495F2A16EEDA00C2F5D3 /* Cloud2.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Cloud2.usdz; sourceTree = "<group>"; };
-		301007892C3547EB00207683 /* Wilson_Football.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Wilson_Football.usdz; sourceTree = "<group>"; };
-		3010078B2C3547F200207683 /* Football.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Football.usdz; sourceTree = "<group>"; };
+		301007892C3547EB00207683 /* Wilson_Football.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Wilson_Football.usdz; sourceTree = "<group>"; };
+		3010078B2C3547F200207683 /* Football.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Football.usdz; sourceTree = "<group>"; };
 		3010078D2C358E0200207683 /* happyBeamVictory.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = happyBeamVictory.m4a; sourceTree = "<group>"; };
 		3010078F2C358E0A00207683 /* happyBeamGameplay.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = happyBeamGameplay.m4a; sourceTree = "<group>"; };
-		307CA2262C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Worn_Baseball_Ball.usdz; sourceTree = "<group>"; };
+		307CA2262C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Worn_Baseball_Ball.usdz; sourceTree = "<group>"; };
 		321A0C0B291C02B80042A987 /* HappyBeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HappyBeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		321A0C12291C02B80042A987 /* HappyBeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyBeamApp.swift; sourceTree = "<group>"; };
 		321A0C18291C02B90042A987 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 		B0B8C3E92BDC363900704A2C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		B0CF53692BF5E560000E4337 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		D276FF7E2C32A5AB003727BB /* happyBeamMenu.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = happyBeamMenu.m4a; sourceTree = "<group>"; };
+		D2A5DD6D2C49546A008F00AE /* LeaderboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +101,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				321C68312A2FEF1C00721BA7 /* HappyBeamAssets in Frameworks */,
+				D2A9DBC92C494FA500EBBEFE /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +155,7 @@
 				321A0C1A291C02B90042A987 /* Preview Content */,
 				B0B8C3E92BDC363900704A2C /* Localizable.xcstrings */,
 				B0CF53692BF5E560000E4337 /* InfoPlist.xcstrings */,
+				D2A5DD6D2C49546A008F00AE /* LeaderboardService.swift */,
 			);
 			path = HappyBeam;
 			sourceTree = "<group>";
@@ -252,6 +257,7 @@
 			name = HappyBeam;
 			packageProductDependencies = (
 				321C68302A2FEF1C00721BA7 /* HappyBeamAssets */,
+				D2A9DBC82C494FA500EBBEFE /* FirebaseFirestore */,
 			);
 			productName = HappyBeamX;
 			productReference = 321A0C0B291C02B80042A987 /* HappyBeam.app */;
@@ -287,6 +293,9 @@
 				ja,
 			);
 			mainGroup = 321A0C02291C02B70042A987;
+			packageReferences = (
+				D2A9DBC72C494FA500EBBEFE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 321A0C0C291C02B80042A987 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -339,6 +348,7 @@
 				324F304B298AED7300200F22 /* MultiPlay.swift in Sources */,
 				324F3047298AE68600200F22 /* SoloPlay.swift in Sources */,
 				324EA74B297B2286005A6B3B /* Multiplayer.swift in Sources */,
+				D2A5DD6E2C49546A008F00AE /* LeaderboardService.swift in Sources */,
 				32D0FA0F291EE85800FF07D8 /* HappyBeamSpace.swift in Sources */,
 				324F3049298AEAF800200F22 /* SoloScore.swift in Sources */,
 				32BD3B6A299C2729005798DF /* Extensions.swift in Sources */,
@@ -568,10 +578,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		D2A9DBC72C494FA500EBBEFE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.29.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		321C68302A2FEF1C00721BA7 /* HappyBeamAssets */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = HappyBeamAssets;
+		};
+		D2A9DBC82C494FA500EBBEFE /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D2A9DBC72C494FA500EBBEFE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

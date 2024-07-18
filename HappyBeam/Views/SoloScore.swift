@@ -10,6 +10,11 @@ import SwiftUI
 struct SoloScore: View {
     @Environment(GameModel.self) var gameModel
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
+//    @StateObject private var leaderboardService = LeaderboardService()
+    @State private var email: String = ""
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    
 
     var body: some View {
         VStack(spacing: 15) {
@@ -24,8 +29,18 @@ struct SoloScore: View {
                 .multilineTextAlignment(.center)
                 .font(.headline)
                 .frame(width: 340)
-                .padding(.bottom, 10)
+            TextField("Enter your email", text: $email)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+                .keyboardType(.emailAddress)
+                .frame(width: 360)
             Group {
+                Button {
+                        addScore()
+                    } label: {
+                        Text("Submit Score", comment: "An action to submit the player's score to the leaderboard.")
+                            .frame(maxWidth: .infinity)
+                    }
                 Button {
                     playAgain()
                 } label: {
@@ -45,7 +60,7 @@ struct SoloScore: View {
         }
         
         .padding(15)
-        .frame(width: 634, height: 499)
+        .frame(width: 634, height: 634)
     }
     
     func playAgain() {
@@ -66,6 +81,23 @@ struct SoloScore: View {
     func goBackToStart() async {
         await dismissImmersiveSpace()
         gameModel.reset()
+    }
+    
+    func addScore() {
+            guard !email.isEmpty else {
+                alertMessage = "Please enter your email."
+                showAlert = true
+                return
+            }
+            
+//        leaderboardService.addScore(email: email, score: gameModel.score) { error in
+//            if let error = error {
+//                alertMessage = "Error adding score: \(error.localizedDescription)"
+//            } else {
+//                alertMessage = "Score added successfully!"
+//            }
+//            showAlert = true
+//        }
     }
 }
 
