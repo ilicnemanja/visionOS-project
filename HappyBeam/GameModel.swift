@@ -212,7 +212,7 @@ class GameModel {
             moneyGun = try? await Entity(named: BundleAssets.moneyGunAsset)
             moneyGun?.name = "MoneyGun"
             moneyGun?.position = .init(x: 0, y: 0.8, z: -1.7)
-            moneyGun?.scale *= 0.1
+            moneyGun?.scale *= 0.05
 
             #if targetEnvironment(simulator)
             let moneyGunDraggable = true
