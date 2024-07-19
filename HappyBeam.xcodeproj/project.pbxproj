@@ -155,7 +155,6 @@
 				321A0C1A291C02B90042A987 /* Preview Content */,
 				B0B8C3E92BDC363900704A2C /* Localizable.xcstrings */,
 				B0CF53692BF5E560000E4337 /* InfoPlist.xcstrings */,
-				D2A5DD6D2C49546A008F00AE /* LeaderboardService.swift */,
 			);
 			path = HappyBeam;
 			sourceTree = "<group>";
@@ -190,6 +189,7 @@
 				324F3046298AE68600200F22 /* SoloPlay.swift */,
 				324F3048298AEAF800200F22 /* SoloScore.swift */,
 				32665A96299AB02200EBA549 /* Lobby.swift */,
+				D2A5DD6D2C49546A008F00AE /* LeaderboardService.swift */,
 				324F304A298AED7300200F22 /* MultiPlay.swift */,
 				324F304C298AF28C00200F22 /* MultiScore.swift */,
 			);

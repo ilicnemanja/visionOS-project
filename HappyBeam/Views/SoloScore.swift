@@ -10,7 +10,7 @@ import SwiftUI
 struct SoloScore: View {
     @Environment(GameModel.self) var gameModel
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
-//    @StateObject private var leaderboardService = LeaderboardService()
+    private var leaderboardService = LeaderboardService()
     @State private var email: String = ""
     @State private var showAlert = false
     @State private var alertMessage = ""
@@ -84,20 +84,20 @@ struct SoloScore: View {
     }
     
     func addScore() {
-            guard !email.isEmpty else {
-                alertMessage = "Please enter your email."
-                showAlert = true
-                return
+        guard !email.isEmpty else {
+            alertMessage = "Please enter your email."
+            showAlert = true
+            return
+        }
+        
+        leaderboardService.addScore(email: email, score: gameModel.score) { error in
+            if let error = error {
+                alertMessage = "Error adding score: \(error.localizedDescription)"
+            } else {
+                alertMessage = "Score added successfully!"
             }
-            
-//        leaderboardService.addScore(email: email, score: gameModel.score) { error in
-//            if let error = error {
-//                alertMessage = "Error adding score: \(error.localizedDescription)"
-//            } else {
-//                alertMessage = "Score added successfully!"
-//            }
-//            showAlert = true
-//        }
+            showAlert = true
+        }
     }
 }
 
