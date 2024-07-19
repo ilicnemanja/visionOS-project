@@ -121,15 +121,15 @@ struct HappyBeamSpace: View {
             if !gameModel.isPaused && gameModel.isPlaying {
                 if shouldShowBeam {
                     if isShowingBeam == false {
-                        moneyGun.addChild(beam)
-                        startBlasterBeam(for: beam, beamType: .gesture)
+                        //moneyGun.addChild(beam)
+                        startBlasterBeam(for: moneyGun, beamType: .gesture)
                     }
                     isShowingBeam = true
                     
                 } else if !shouldShowBeam && isShowingBeam == true {
                     if Date.timeIntervalSinceReferenceDate > lastHeartDetectionTime + 0.1 {
                         isShowingBeam = false
-                        moneyGun.removeChild(beam)
+                        //moneyGun.removeChild(beam)
                         endBlasterBeam()
                     }
                 }
