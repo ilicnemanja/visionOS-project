@@ -110,6 +110,9 @@ struct HappyBeamSpace: View {
                                 
                 moneyGun.transform.translation = SIMD3<Float>(position.vector)
                 moneyGun.transform.rotation = simd_quatf(vector: [Float(averageX), Float(averageY), Float(averageZ), Float(averageW)])
+                beam.orientation = simd_quatf(
+                    Rotation3D(angle: .degrees(-90), axis: .x))
+                
                 lastHeartDetectionTime = Date.timeIntervalSinceReferenceDate
                 
                 if gameModel.isSharePlaying {
@@ -121,7 +124,7 @@ struct HappyBeamSpace: View {
             if !gameModel.isPaused && gameModel.isPlaying {
                 if shouldShowBeam {
                     if isShowingBeam == false {
-                        //moneyGun.addChild(beam)
+                        moneyGun.addChild(beam)
                         startBlasterBeam(for: moneyGun, beamType: .gesture)
                     }
                     isShowingBeam = true
@@ -129,7 +132,7 @@ struct HappyBeamSpace: View {
                 } else if !shouldShowBeam && isShowingBeam == true {
                     if Date.timeIntervalSinceReferenceDate > lastHeartDetectionTime + 0.1 {
                         isShowingBeam = false
-                        //moneyGun.removeChild(beam)
+                        moneyGun.removeChild(beam)
                         endBlasterBeam()
                     }
                 }
