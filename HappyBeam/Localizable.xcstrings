@@ -217,6 +217,9 @@
         }
       }
     },
+    "%lld" : {
+
+    },
     "%lld clouds above and behind you" : {
       "comment" : "Describes the position of clouds in the 3D scene.",
       "localizations" : {
@@ -1237,6 +1240,9 @@
         }
       }
     },
+    "Email" : {
+
+    },
     "Enter your email" : {
 
     },
@@ -1450,6 +1456,12 @@
         }
       }
     },
+    "Leaderboard" : {
+
+    },
+    "Leaderboard Table" : {
+
+    },
     "Loading assets…" : {
       "localizations" : {
         "de" : {
@@ -1483,6 +1495,9 @@
           }
         }
       }
+    },
+    "Loading scores..." : {
+
     },
     "Make a heart with two hands." : {
       "comment" : "A way to control the game.",

@@ -7,9 +7,9 @@ struct ScoreEntry: Identifiable {
     let score: Int
 }
 
-class LeaderboardService {
+class LeaderboardService: ObservableObject {
     private let db = Firestore.firestore()
-     @Published var leaderboard: [ScoreEntry] = []
+    @Published var leaderboard: [ScoreEntry] = []
 
     func addScore(email: String, score: Int, completion: @escaping (Error?) -> Void) {
         let newScore = ["email": email, "score": score] as [String : Any]
@@ -18,7 +18,7 @@ class LeaderboardService {
     }
 
     func fetchLeaderboard() {
-        db.collection("leaderboard").order(by: "score", descending: true).limit(to: 10).addSnapshotListener { snapshot, error in
+        db.collection("leaderboard").order(by: "score", descending: true).addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error fetching leaderboard: \(error)")
             } else {
