@@ -114,7 +114,8 @@ struct HappyBeamSpace: View {
                 moneyGun.transform.translation = SIMD3<Float>(newPosition)
                 moneyGun.transform.rotation = simd_quatf(vector: [Float(averageX), Float(averageY), Float(averageZ), Float(averageW)])
                 beam.orientation = simd_quatf(
-                    Rotation3D(angle: .degrees(90), axis: .y))
+                    Rotation3D(angle: .degrees(90), axis: .y)
+                        .rotated(by: Rotation3D(angle: .degrees(90), axis: .z)))
                 
                 lastHeartDetectionTime = Date.timeIntervalSinceReferenceDate
                 
@@ -256,9 +257,9 @@ struct HappyBeamSpace: View {
                     let collisionComp = CollisionComponent(shapes: [collisionShape])
                     collisionEntity.components.set(collisionComp)
 
-                    let model = ModelEntity(mesh: .generateSphere(radius: radius))
-                    model.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
-                    collisionEntity.addChild(model)
+//                    let model = ModelEntity(mesh: .generateSphere(radius: radius))
+//                    model.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
+//                    collisionEntity.addChild(model)
                 }
 
                 blasterPosition += Float(elapsedTime) * 1.5
