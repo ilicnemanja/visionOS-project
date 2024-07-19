@@ -46,6 +46,9 @@
 		D276FF7F2C32A5B4003727BB /* happyBeamMenu.m4a in Resources */ = {isa = PBXBuildFile; fileRef = D276FF7E2C32A5AB003727BB /* happyBeamMenu.m4a */; };
 		D2A5DD6E2C49546A008F00AE /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A5DD6D2C49546A008F00AE /* LeaderboardService.swift */; };
 		D2A9DBC92C494FA500EBBEFE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D2A9DBC82C494FA500EBBEFE /* FirebaseFirestore */; };
+		D2E0C1412C4A851500326A17 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2E0C1402C4A851500326A17 /* GoogleService-Info.plist */; };
+		D2E0C1432C4A861100326A17 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D2E0C1422C4A861100326A17 /* FirebaseAnalytics */; };
+		D2E0C1452C4A861100326A17 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = D2E0C1442C4A861100326A17 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +96,7 @@
 		B0CF53692BF5E560000E4337 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		D276FF7E2C32A5AB003727BB /* happyBeamMenu.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = happyBeamMenu.m4a; sourceTree = "<group>"; };
 		D2A5DD6D2C49546A008F00AE /* LeaderboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardService.swift; sourceTree = "<group>"; };
+		D2E0C1402C4A851500326A17 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +106,8 @@
 			files = (
 				321C68312A2FEF1C00721BA7 /* HappyBeamAssets in Frameworks */,
 				D2A9DBC92C494FA500EBBEFE /* FirebaseFirestore in Frameworks */,
+				D2E0C1432C4A861100326A17 /* FirebaseAnalytics in Frameworks */,
+				D2E0C1452C4A861100326A17 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +157,7 @@
 				32BD3B69299C2729005798DF /* Extensions.swift */,
 				321A0C25291C09100042A987 /* HappyBeam.entitlements */,
 				321A0C18291C02B90042A987 /* Assets.xcassets */,
+				D2E0C1402C4A851500326A17 /* GoogleService-Info.plist */,
 				321A0C1D291C02B90042A987 /* Info.plist */,
 				321A0C1A291C02B90042A987 /* Preview Content */,
 				B0B8C3E92BDC363900704A2C /* Localizable.xcstrings */,
@@ -258,6 +265,8 @@
 			packageProductDependencies = (
 				321C68302A2FEF1C00721BA7 /* HappyBeamAssets */,
 				D2A9DBC82C494FA500EBBEFE /* FirebaseFirestore */,
+				D2E0C1422C4A861100326A17 /* FirebaseAnalytics */,
+				D2E0C1442C4A861100326A17 /* FirebaseAnalyticsWithoutAdIdSupport */,
 			);
 			productName = HappyBeamX;
 			productReference = 321A0C0B291C02B80042A987 /* HappyBeam.app */;
@@ -327,6 +336,7 @@
 				321A0C19291C02B90042A987 /* Assets.xcassets in Resources */,
 				329937122A12A8B60073F0B0 /* cloudHit4.m4a in Resources */,
 				32745A162A02F4C1000035F8 /* UpdatedGrumpyScene2.usdz in Resources */,
+				D2E0C1412C4A851500326A17 /* GoogleService-Info.plist in Resources */,
 				B0B8C3EA2BDC363900704A2C /* Localizable.xcstrings in Resources */,
 				3299370F2A12A8B60073F0B0 /* cloudHit3.m4a in Resources */,
 			);
@@ -598,6 +608,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D2A9DBC72C494FA500EBBEFE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		D2E0C1422C4A861100326A17 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D2A9DBC72C494FA500EBBEFE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		D2E0C1442C4A861100326A17 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D2A9DBC72C494FA500EBBEFE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
