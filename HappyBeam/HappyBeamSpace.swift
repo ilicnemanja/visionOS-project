@@ -93,7 +93,8 @@ struct HappyBeamSpace: View {
 
                 let position = Pose3D(handsCenter)!.position
                 var newPosition = position.vector
-                newPosition.z -= 1.0
+                newPosition.z -= 0.15
+                newPosition.y += 0.05
                 let rotation = Pose3D(handsCenter)!.rotation
                 
                 // Rolling average window of N, ~2-30 frames
@@ -113,7 +114,7 @@ struct HappyBeamSpace: View {
                 moneyGun.transform.translation = SIMD3<Float>(newPosition)
                 moneyGun.transform.rotation = simd_quatf(vector: [Float(averageX), Float(averageY), Float(averageZ), Float(averageW)])
                 beam.orientation = simd_quatf(
-                    Rotation3D(angle: .degrees(90), axis: .z))
+                    Rotation3D(angle: .degrees(90), axis: .y))
                 
                 lastHeartDetectionTime = Date.timeIntervalSinceReferenceDate
                 
