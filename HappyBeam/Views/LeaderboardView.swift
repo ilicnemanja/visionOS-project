@@ -18,7 +18,7 @@ struct LeaderboardView: View {
                     .padding(.bottom, 20)
                 
                 HStack {
-                    Text("Email")
+                    Text("Nickname")
                         .font(.headline)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 10)
@@ -30,7 +30,7 @@ struct LeaderboardView: View {
                 .padding(.horizontal)
                 
                 ScrollView {
-                    LeaderboardTable(scores: leaderboardService.leaderboard.map { ($0.email, $0.score) })
+                    LeaderboardTable(scores: leaderboardService.leaderboard.map { ($0.nickname, $0.score) })
                 }
                 .padding(.bottom, 20)
                 
@@ -48,8 +48,8 @@ struct LeaderboardView: View {
                 .frame(width: 260)
             }
         }
-        .padding(15)
-        .frame(width: 634, height: 634)
+        .padding(10)
+        .frame(width: 600, height: 600)
         .onAppear {
             loadScores()
         }

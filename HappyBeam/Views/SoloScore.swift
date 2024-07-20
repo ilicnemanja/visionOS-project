@@ -5,6 +5,7 @@ struct SoloScore: View {
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
     private var leaderboardService = LeaderboardService()
     @State private var email: String = ""
+    @State private var nickname: String = ""
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var navigateToLeaderboard = false  // State to trigger navigation
@@ -23,11 +24,20 @@ struct SoloScore: View {
                     .multilineTextAlignment(.center)
                     .font(.headline)
                     .frame(width: 340)
-                TextField("Enter your email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                    .keyboardType(.emailAddress)
-                    .frame(width: 360)
+                VStack(spacing: 0) { // Adjust spacing here for TextFields
+                    TextField("Enter your nickname", text: $nickname)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                        .keyboardType(.default)
+                        .frame(width: 360)
+                    
+                    TextField("Enter your email", text: $email)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                        .keyboardType(.emailAddress)
+                        .frame(width: 360)
+                }
+                
                 Group {
                     Button {
                         addScore()
@@ -45,42 +55,58 @@ struct SoloScore: View {
                 .frame(width: 260)
             }
             .padding(15)
-            .frame(width: 300, height: 450)
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Validation Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
             .navigationDestination(isPresented: $navigateToLeaderboard) {
                 LeaderboardView()
             }
         }
+        .frame(width: 660, height: 700)
+    }
+
+    func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+        let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: email)
     }
 
     func playAgain() {
         let inputChoice = gameModel.inputKind
         gameModel.reset()
-        
+
         if beamIntermediate.parent == nil {
             spaceOrigin.addChild(beamIntermediate)
         }
-        
+
         gameModel.isPlaying = true
         gameModel.isInputSelected = true
         gameModel.isCountDownReady = true
         gameModel.inputKind = inputChoice
     }
-    
+
     func addScore() {
-        guard !email.isEmpty else {
-            alertMessage = "Please enter your email."
+        guard !nickname.isEmpty else {
+            alertMessage = "Please enter your nickname."
             showAlert = true
             return
         }
-        
-        leaderboardService.addScore(email: email, score: gameModel.score) { error in
+
+        guard isValidEmail(email) else {
+            alertMessage = "Please enter a valid email."
+            showAlert = true
+            return
+        }
+
+        leaderboardService.addScore(email: email, nickname: nickname, score: gameModel.score) { error in
             if let error = error {
                 alertMessage = "Error adding score: \(error.localizedDescription)"
             } else {
+                showAlert = false
                 alertMessage = "Score added successfully!"
                 navigateToLeaderboard = true // Trigger navigation to LeaderboardView
             }
-            showAlert = true
+            
         }
     }
 }

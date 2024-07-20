@@ -1240,10 +1240,10 @@
         }
       }
     },
-    "Email" : {
+    "Enter your email" : {
 
     },
-    "Enter your email" : {
+    "Enter your nickname" : {
 
     },
     "Gather the sports balls by precisely aiming your gestures at the objects." : {
@@ -1457,7 +1457,7 @@
       }
     },
     "Leaderboard" : {
-
+      "comment" : "Leaderboard table overview."
     },
     "Leaderboard Table" : {
 
@@ -1534,6 +1534,9 @@
         }
       }
     },
+    "Nickname" : {
+
+    },
     "Nimbus" : {
       "localizations" : {
         "de" : {
@@ -1567,6 +1570,9 @@
           }
         }
       }
+    },
+    "OK" : {
+
     },
     "Pause" : {
       "comment" : "Button to pause the game",
@@ -1958,6 +1964,9 @@
           }
         }
       }
+    },
+    "Validation Error" : {
+
     },
     "Waiting for all players to choose." : {
       "comment" : "Informative message about why the multi-player game has not yet started.",
