@@ -186,6 +186,7 @@ class GameModel {
             beam.orientation = simd_quatf(
                 Rotation3D(angle: .degrees(90), axis: .y)
                     .rotated(by: Rotation3D(angle: .degrees(-90), axis: .z))
+                            .rotated(by: Rotation3D(angle: .degrees(-90), axis: .x))
             )
             
             floorBeam = beam.clone(recursive: true)
@@ -195,25 +196,45 @@ class GameModel {
             let fireworks = try await Entity(named: "fireworks")
             globalFireworks = fireworks.children.first!.children.first!
             
-            turret = await loadFromRealityComposerPro(named: BundleAssets.heartTurretEntity, fromSceneNamed: BundleAssets.heartTurretScene)
-            turret?.name = "Holder"
-            turret?.position = .init(x: 0, y: 0.25, z: -1.7)
-            turret?.scale *= 0.3
-            
-            heart = await loadFromRealityComposerPro(named: BundleAssets.heartLightEntity, fromSceneNamed: BundleAssets.heartLightScene)
-            heart?.name = "Heart Projector"
-            heart?.generateCollisionShapes(recursive: true)
-            heart?.position = .init(x: 0, y: 0.25, z: -1.7)
-            heart?.position.y += 0.68
-            heart?.scale *= 0.22
-            heart?.components[InputTargetComponent.self] = InputTargetComponent(allowedInputTypes: .all)
+//            turret = await loadFromRealityComposerPro(named: BundleAssets.heartTurretEntity, fromSceneNamed: BundleAssets.heartTurretScene)
+//            turret?.name = "Holder"
+//            turret?.position = .init(x: 0, y: 0.25, z: -1.7)
+//            turret?.scale *= 0.3
+//
+//            heart = await loadFromRealityComposerPro(named: BundleAssets.heartLightEntity, fromSceneNamed: BundleAssets.heartLightScene)
+//            heart?.name = "Heart Projector"
+//            heart?.generateCollisionShapes(recursive: true)
+//            heart?.position = .init(x: 0, y: 0.25, z: -1.7)
+//            heart?.position.y += 0.68
+//            heart?.scale *= 0.22
+//            heart?.components[InputTargetComponent.self] = InputTargetComponent(allowedInputTypes: .all)
+
+            moneyGun = try? await Entity(named: BundleAssets.moneyGunAsset)
+            moneyGun?.name = "MoneyGun"
+            moneyGun?.position = .init(x: 0, y: 0.8, z: -1.7)
+            moneyGun?.scale *= 0.05
+
+            #if targetEnvironment(simulator)
+            let moneyGunDraggable = true
+            #else
+            let moneyGunDraggable = inputKind == .alternative
+            #endif
+            if moneyGunDraggable {
+                moneyGun?.generateCollisionShapes(recursive: true)
+                moneyGun?.components[InputTargetComponent.self] = InputTargetComponent(allowedInputTypes: .all)
+            }
 
             basketballBallTemplate = try? await Entity(named: BundleAssets.basketballBall)
             nflBallTemplate = try? await Entity(named: BundleAssets.nflBall)
             soccerBallTemplate = try? await Entity(named: BundleAssets.soccerBall)
             baseballBallTemplate = try? await Entity(named: BundleAssets.baseballBall)
+            
+            scaleTemplate(basketballBallTemplate, to: SIMD3<Float>(0.24, 0.24, 0.24))
+            scaleTemplate(nflBallTemplate, to: SIMD3<Float>(0.56, 0.28, 0.28))
+            scaleTemplate(soccerBallTemplate, to: SIMD3<Float>(0.22, 0.22, 0.22))
+            scaleTemplate(baseballBallTemplate, to: SIMD3<Float>(0.074, 0.074, 0.074))
 
-            guard turret != nil, heart != nil, basketballBallTemplate != nil, nflBallTemplate != nil, soccerBallTemplate != nil, baseballBallTemplate != nil else {
+            guard moneyGun != nil, basketballBallTemplate != nil, nflBallTemplate != nil, soccerBallTemplate != nil, baseballBallTemplate != nil else {
                 fatalError("Error loading assets.")
             }
             
@@ -238,6 +259,22 @@ class GameModel {
         }
     }
     
+    func scaleTemplate(_ template: Entity?, to realSize: SIMD3<Float>) {
+        guard let template = template else { return }
+        
+        template.generateCollisionShapes(recursive: true)
+        let templateBounds = template.visualBounds(relativeTo: nil)
+        let templateSize = templateBounds.extents
+
+        let scaleCoefficient = SIMD3<Float>(
+            realSize.x / templateSize.x,
+            realSize.y / templateSize.y,
+            realSize.z / templateSize.z
+        )
+
+        template.scale *= scaleCoefficient
+    }
+    
     /// Preload animation assets.
     func generateBallMovementAnimations() {
         for index in (0..<ballPaths.count) {
@@ -251,12 +288,16 @@ class GameModel {
                 y: start.y + BallSpawnParameters.deltaY,
                 z: start.z + BallSpawnParameters.deltaZ
             )
+            
+            let startRotation = simd_quatf(angle: 0, axis: SIMD3<Float>(0, 1.0, 0))
+            let endRotation = simd_quatf(angle: .pi, axis: SIMD3<Float>(0, 1.0, 0))
+            
             let speed = BallSpawnParameters.speed
             
             let line = FromToByAnimation<Transform>(
                 name: "line",
-                from: .init(scale: .init(repeating: 0.005), translation: simd_float(start.vector)),
-                to: .init(scale: .init(repeating: 0.005), translation: simd_float(end.vector)),
+                from: .init(scale: .init(repeating: 0.005), rotation: startRotation, translation: simd_float(start.vector)),
+                to: .init(scale: .init(repeating: 0.005), rotation: endRotation, translation: simd_float(end.vector)),
                 duration: speed,
                 bindTarget: .transform
             )

@@ -66,7 +66,6 @@ func handleBallHit(for cloud: Entity, gameModel: GameModel, remote: Bool = false
         localPlayer.score += 1
     }
     
-    cloudAnimate(cloud, kind: .smile, shouldRepeat: false)
     AccessibilityNotification.Announcement(String(localized: "Grumpy Cloud Hit")).post()
     
     // Play cloud hit sound.

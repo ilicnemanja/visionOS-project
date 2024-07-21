@@ -14,6 +14,8 @@
 		3010078E2C358E0200207683 /* happyBeamVictory.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3010078D2C358E0200207683 /* happyBeamVictory.m4a */; };
 		301007902C358E0A00207683 /* happyBeamGameplay.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 3010078F2C358E0A00207683 /* happyBeamGameplay.m4a */; };
 		307CA2272C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 307CA2262C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz */; };
+		307CA22F2C3BE07200DCDDD2 /* Supreme_Money_Gun.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 307CA22E2C3BE07200DCDDD2 /* Supreme_Money_Gun.usdz */; };
+		307CA2312C3D196900DCDDD2 /* gun.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 307CA2302C3D196900DCDDD2 /* gun.usdz */; };
 		321A0C13291C02B80042A987 /* HappyBeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321A0C12291C02B80042A987 /* HappyBeamApp.swift */; };
 		321A0C19291C02B90042A987 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 321A0C18291C02B90042A987 /* Assets.xcassets */; };
 		321A0C1C291C02B90042A987 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 321A0C1B291C02B90042A987 /* Preview Assets.xcassets */; };
@@ -60,7 +62,9 @@
 		3010078B2C3547F200207683 /* Football.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Football.usdz; sourceTree = "<group>"; };
 		3010078D2C358E0200207683 /* happyBeamVictory.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = happyBeamVictory.m4a; sourceTree = "<group>"; };
 		3010078F2C358E0A00207683 /* happyBeamGameplay.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = happyBeamGameplay.m4a; sourceTree = "<group>"; };
-		307CA2262C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Worn_Baseball_Ball.usdz; sourceTree = "<group>"; };
+		307CA2262C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Worn_Baseball_Ball.usdz; sourceTree = "<group>"; };
+		307CA22E2C3BE07200DCDDD2 /* Supreme_Money_Gun.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Supreme_Money_Gun.usdz; sourceTree = "<group>"; };
+		307CA2302C3D196900DCDDD2 /* gun.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = gun.usdz; sourceTree = "<group>"; };
 		321A0C0B291C02B80042A987 /* HappyBeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HappyBeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		321A0C12291C02B80042A987 /* HappyBeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyBeamApp.swift; sourceTree = "<group>"; };
 		321A0C18291C02B90042A987 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -231,6 +235,8 @@
 				1F82495F2A16EEDA00C2F5D3 /* Cloud2.usdz */,
 				32745A152A02F4C1000035F8 /* UpdatedGrumpyScene2.usdz */,
 				328389172A04203700CD388B /* fireworks.usdz */,
+				307CA2302C3D196900DCDDD2 /* gun.usdz */,
+				307CA22E2C3BE07200DCDDD2 /* Supreme_Money_Gun.usdz */,
 			);
 			path = USDZs;
 			sourceTree = "<group>";
@@ -330,6 +336,7 @@
 				32C96CBF2A2FED900030AA37 /* Packages in Resources */,
 				329937112A12A8B60073F0B0 /* cloudHit2.m4a in Resources */,
 				328389182A04203700CD388B /* fireworks.usdz in Resources */,
+				307CA2312C3D196900DCDDD2 /* gun.usdz in Resources */,
 				3010078E2C358E0200207683 /* happyBeamVictory.m4a in Resources */,
 				321A0C1C291C02B90042A987 /* Preview Assets.xcassets in Resources */,
 				121C61D32C2F01FF0066C65F /* Basketball.usdz in Resources */,
@@ -340,6 +347,7 @@
 				3299370D2A12A8B60073F0B0 /* cloudHit1.m4a in Resources */,
 				3010078C2C3547F200207683 /* Football.usdz in Resources */,
 				321A0C19291C02B90042A987 /* Assets.xcassets in Resources */,
+				307CA22F2C3BE07200DCDDD2 /* Supreme_Money_Gun.usdz in Resources */,
 				329937122A12A8B60073F0B0 /* cloudHit4.m4a in Resources */,
 				32745A162A02F4C1000035F8 /* UpdatedGrumpyScene2.usdz in Resources */,
 				D2E0C1412C4A851500326A17 /* GoogleService-Info.plist in Resources */,

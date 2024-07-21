@@ -114,7 +114,7 @@ struct MultiPlay: View {
                 let shouldAddProjector = gameModel.inputKind == .alternative
                 #endif
 
-                if shouldAddProjector, heart != nil {
+                if shouldAddProjector, moneyGun != nil {
                     try await addFloorBeamMaterials()
                 }
             } catch {

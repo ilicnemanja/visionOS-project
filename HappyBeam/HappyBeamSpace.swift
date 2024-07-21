@@ -26,6 +26,7 @@ struct HappyBeamSpace: View {
     @State private var orientations: [simd_quatf] = []
     @State private var collisionSubscription: EventSubscription?
     @State private var activationSubscription: EventSubscription?
+
     
     var collisionEntity = Entity()
     
@@ -35,7 +36,7 @@ struct HappyBeamSpace: View {
             content.add(spaceOrigin)
             content.add(cameraRelativeAnchor)
             spaceOrigin.addChild(beamIntermediate)
-            
+
             // MARK: Events
             activationSubscription = content.subscribe(to: AccessibilityEvents.Activate.self, on: nil, componentType: nil) { activation in
                 Task {
@@ -85,9 +86,15 @@ struct HappyBeamSpace: View {
                 }
             }
         } update: { updateContent in
+            let moneyGun = globalMoneyGun!
+
             let handsCenterTransform = gestureModel.computeTransformOfUserPerformedHeartGesture()
             if let handsCenter = handsCenterTransform {
+
                 let position = Pose3D(handsCenter)!.position
+                var newPosition = position.vector
+                newPosition.z -= 0.15
+                newPosition.y += 0.05
                 let rotation = Pose3D(handsCenter)!.rotation
                 
                 // Rolling average window of N, ~2-30 frames
@@ -103,9 +110,13 @@ struct HappyBeamSpace: View {
                 
                 wIndex += 1
                 wIndex %= windowSize
+                                
+                moneyGun.transform.translation = SIMD3<Float>(newPosition)
+                moneyGun.transform.rotation = simd_quatf(vector: [Float(averageX), Float(averageY), Float(averageZ), Float(averageW)])
+                beam.orientation = simd_quatf(
+                    Rotation3D(angle: .degrees(90), axis: .y)
+                        .rotated(by: Rotation3D(angle: .degrees(270), axis: .z)))
                 
-                beamIntermediate.transform.translation = SIMD3<Float>(position.vector)
-                beamIntermediate.transform.rotation = simd_quatf(vector: [Float(averageX), Float(averageY), Float(averageZ), Float(averageW)])
                 lastHeartDetectionTime = Date.timeIntervalSinceReferenceDate
                 
                 if gameModel.isSharePlaying {
@@ -117,70 +128,70 @@ struct HappyBeamSpace: View {
             if !gameModel.isPaused && gameModel.isPlaying {
                 if shouldShowBeam {
                     if isShowingBeam == false {
-                        beamIntermediate.addChild(beam)
-                        startBlasterBeam(for: beam, beamType: .gesture)
+                        moneyGun.addChild(beam)
+                        startBlasterBeam(for: moneyGun, beamType: .gesture)
                     }
                     isShowingBeam = true
                     
                 } else if !shouldShowBeam && isShowingBeam == true {
                     if Date.timeIntervalSinceReferenceDate > lastHeartDetectionTime + 0.1 {
                         isShowingBeam = false
-                        beamIntermediate.removeChild(beam)
+                        moneyGun.removeChild(beam)
                         endBlasterBeam()
                     }
                 }
             }
         }
-        .gesture(DragGesture(minimumDistance: 0.0)
-            .targetedToAnyEntity()
-            .onChanged { @MainActor drag in
-                let entity = drag.entity
-                guard entity[parentMatching: "Heart Projector"] != nil else { return }
-                
-                if draggedEntity == nil || emittingBeam == false {
-                    draggedEntity = entity
-                    emittingBeam = true
-                    startBlasterBeam(for: entity, beamType: .turret)
+        .gesture(
+            DragGesture(minimumDistance: 0.0)
+                .targetedToAnyEntity()
+                .onChanged { @MainActor drag in
+                    let entity = drag.entity
+                    guard let moneyGun = moneyGun, entity[parentMatching: "MoneyGun"] != nil else { return }
+
+                    if draggedEntity == nil || emittingBeam == false {
+                        draggedEntity = moneyGun
+                        emittingBeam = true
+                        startBlasterBeam(for: moneyGun, beamType: .turret)
+                    }
+
+                    emittingBeam = !gameModel.isPaused
+
+                    if !isFloorBeamShowing && !gameModel.isPaused && gameModel.isPlaying {
+                        moneyGun.addChild(floorBeam)
+
+                        floorBeam.orientation = simd_quatf(
+                                Rotation3D(angle: .degrees(90), axis: .z)
+                                        .rotated(by: .init(angle: .degrees(180), axis: .y))
+                                        .rotated(by: Rotation3D(angle: .degrees(-90), axis: .x))
+                        )
+                        isFloorBeamShowing = true
+                    }
+
+                    let dragPoint = Point3D(drag.gestureValue.translation3D.vector) / 300
+                    let xRotation = (-180 * (dragPoint.x)).clamped(to: -90...90)
+                    let yRotation = (-180 * (dragPoint.y)).clamped(to: -90...90)
+
+                    let newOrientation = Rotation3D(angle: .degrees(Double(xRotation)), axis: .y)
+                            .rotated(
+                                    by: .init(angle: .degrees(Double(yRotation)), axis: .x)
+                            )
+
+                    moneyGun.orientation = simd_quatf(newOrientation)
+
+                    if gameModel.isSharePlaying {
+                        sendBeamPositionUpdate(Pose3D(moneyGun.transform.matrix)!)
+                    }
                 }
-                
-                emittingBeam = !gameModel.isPaused
-                
-                if !isFloorBeamShowing && !gameModel.isPaused && gameModel.isPlaying {
-                    entity.addChild(floorBeam)
-                    
-                    floorBeam.orientation = simd_quatf(
-                        Rotation3D(angle: .degrees(90), axis: .z)
-                            .rotated(by: .init(angle: .degrees(180), axis: .y))
-                    )
-                    
-                    isFloorBeamShowing = true
+                .onEnded { dragEnd in
+                    if !gameModel.isPaused {
+                        floorBeam.removeFromParent()
+                        isFloorBeamShowing = false
+                        globalMoneyGun?.children[0].transform.rotation = .init()
+                    }
+                    endBlasterBeam()
                 }
-                
-                // Slow the rotation down.
-                let dragPoint = Point3D(drag.gestureValue.translation3D.vector) / 300
-                let zRotation = (-180 * (dragPoint.x)).clamped(to: -90...90)
-                let yRotation = (-180 * (dragPoint.y)).clamped(to: -90...90)
-            
-                let newOrientation = Rotation3D(angle: .degrees(Double(zRotation)), axis: .z)
-                    .rotated(
-                        by: .init(angle: .degrees(Double(yRotation)), axis: .x)
-                    )
-                
-                entity.orientation = simd_quatf(newOrientation)
-                
-                if gameModel.isSharePlaying {
-                    sendBeamPositionUpdate(Pose3D(entity.transform.matrix)!)
-                }
-            }
-            .onEnded { dragEnd in
-                if !gameModel.isPaused {
-                    floorBeam.removeFromParent()
-                    isFloorBeamShowing = false
-                    globalHeart?.children[0].transform.rotation = .init()
-                }
-                endBlasterBeam()
-            }
-        )
+            )
         .task {
             await gestureModel.start()
         }
@@ -229,7 +240,7 @@ struct HappyBeamSpace: View {
             draggedEntity = entity
             while emittingBeam == true {
                 let elapsedTime = Date.timeIntervalSinceReferenceDate - lastGestureUpdateTime
-                
+
                 collisionEntity.removeFromParent()
                 collisionEntity.name = collisionEntityName
                 var root = entity
@@ -245,18 +256,19 @@ struct HappyBeamSpace: View {
                     let collisionShape = ShapeResource.generateSphere(radius: radius)
                     let collisionComp = CollisionComponent(shapes: [collisionShape])
                     collisionEntity.components.set(collisionComp)
+
+//                    let model = ModelEntity(mesh: .generateSphere(radius: radius))
+//                    model.model?.materials = [SimpleMaterial(color: .red, isMetallic: false)]
+//                    collisionEntity.addChild(model)
                 }
-                
+
                 blasterPosition += Float(elapsedTime) * 1.5
                 blasterPosition -= floorf(blasterPosition)
                 entity.setMaterialParameterValues(parameter: HappyBeamAssets.beamPositionParameterName, value: .float(blasterPosition))
                 let offset: Float = (beamType == .turret) ? 23 : 1400
-                let offsetVector: SIMD3<Float> = (beamType == .turret)
-                    ? [0, 1, 0] * offset * blasterPosition
-                    : [1, 0, 0] * offset * blasterPosition
-                
-                collisionEntity.setPosition(offsetVector, relativeTo: entity)
+                let offsetVector = (float4x4(simd_quatf(angle: -Float.pi / 2, axis: SIMD3<Float>(1, 0, 0)))).transformPoint([0, 1, 0] * offset * blasterPosition)
 
+                collisionEntity.setPosition(offsetVector, relativeTo: entity)
                 lastGestureUpdateTime = Date.timeIntervalSinceReferenceDate
                 try? await Task.sleep(for: .milliseconds(66.666_666))
             }
@@ -275,20 +287,20 @@ struct HappyBeamSpace: View {
             #endif
             gameModel.controllerX += gameModel.controllerInputX * speed
             gameModel.controllerY -= gameModel.controllerInputY * speed
-            
-            let heart = globalHeart!
+
+            let moneyGun = globalMoneyGun!
             if !isFloorBeamShowing && (gameModel.controllerInputX != 0.0 || gameModel.controllerInputX != 0.0) {
-                heart.addChild(floorBeam)
+                moneyGun.addChild(floorBeam)
                 emittingBeam = true
-                startBlasterBeam(for: heart, beamType: .turret)
+                startBlasterBeam(for: moneyGun, beamType: .turret)
                 floorBeam.orientation = simd_quatf(
                     Rotation3D(angle: .degrees(90), axis: .z)
                         .rotated(by: .init(angle: .degrees(180), axis: .y))
                 )
                 isFloorBeamShowing = true
             }
-            
-            heart.orientation = simd_quatf(
+
+            moneyGun.orientation = simd_quatf(
                 Rotation3D(angle: .degrees(Double(-gameModel.controllerX)), axis: .z)
                     .rotated(by: .init(angle: .degrees(Double(-gameModel.controllerY)), axis: .x))
             )
@@ -299,7 +311,7 @@ struct HappyBeamSpace: View {
 
             gameModel.controllerDismissTimer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { _ in
                 Task { @MainActor in
-                    heart.removeChild(floorBeam)
+                    moneyGun.removeChild(floorBeam)
                     isFloorBeamShowing = false
                     endBlasterBeam()
                 }
@@ -333,19 +345,17 @@ var isShowingBeam = false {
 
 var lastHeartDetectionTime = Date.timeIntervalSinceReferenceDate
 
-/// Adds the purple base and golden heart models when someone picks an input mode that requires them.
+/// Adds the money gun model when someone picks an input mode that requires them.
 @MainActor
 func addFloorBeamMaterials() async throws {
     guard
-        let turret = turret,
-        let heart = heart
+        let moneyGun = moneyGun
     else {
         fatalError("Required assets are nil.")
     }
-    
-    globalHeart = heart
-    spaceOrigin.addChild(turret)
-    spaceOrigin.addChild(heart)
+
+    globalMoneyGun = moneyGun
+    spaceOrigin.addChild(moneyGun)
 }
 
 /// Loads assets from the local HappyBeamAssets package.
