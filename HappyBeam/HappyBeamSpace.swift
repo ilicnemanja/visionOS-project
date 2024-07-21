@@ -115,7 +115,7 @@ struct HappyBeamSpace: View {
                 moneyGun.transform.rotation = simd_quatf(vector: [Float(averageX), Float(averageY), Float(averageZ), Float(averageW)])
                 beam.orientation = simd_quatf(
                     Rotation3D(angle: .degrees(90), axis: .y)
-                        .rotated(by: Rotation3D(angle: .degrees(90), axis: .z)))
+                        .rotated(by: Rotation3D(angle: .degrees(270), axis: .z)))
                 
                 lastHeartDetectionTime = Date.timeIntervalSinceReferenceDate
                 
