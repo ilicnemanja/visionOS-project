@@ -217,6 +217,9 @@
         }
       }
     },
+    "%lld" : {
+
+    },
     "%lld clouds above and behind you" : {
       "comment" : "Describes the position of clouds in the 3D scene.",
       "localizations" : {
@@ -1237,6 +1240,12 @@
         }
       }
     },
+    "Enter your email" : {
+
+    },
+    "Enter your nickname" : {
+
+    },
     "Gather the sports balls by precisely aiming your gestures at the objects." : {
       "comment" : "This text explains the purpose of the game."
     },
@@ -1447,6 +1456,12 @@
         }
       }
     },
+    "Leaderboard" : {
+      "comment" : "Leaderboard table overview."
+    },
+    "Leaderboard Table" : {
+
+    },
     "Loading assets…" : {
       "localizations" : {
         "de" : {
@@ -1480,6 +1495,9 @@
           }
         }
       }
+    },
+    "Loading scores..." : {
+
     },
     "Make a heart with two hands." : {
       "comment" : "A way to control the game.",
@@ -1516,6 +1534,9 @@
         }
       }
     },
+    "Nickname" : {
+
+    },
     "Nimbus" : {
       "localizations" : {
         "de" : {
@@ -1549,6 +1570,9 @@
           }
         }
       }
+    },
+    "OK" : {
+
     },
     "Pause" : {
       "comment" : "Button to pause the game",
@@ -1900,6 +1924,9 @@
         }
       }
     },
+    "Submit Score" : {
+      "comment" : "An action to submit the player's score to the leaderboard."
+    },
     "Ticket Ball Collect" : {
       "comment" : "The name of the game."
     },
@@ -1937,6 +1964,9 @@
           }
         }
       }
+    },
+    "Validation Error" : {
+
     },
     "Waiting for all players to choose." : {
       "comment" : "Informative message about why the multi-player game has not yet started.",

@@ -7,12 +7,24 @@ The app structure.
 
 import SwiftUI
 import RealityKit
+import FirebaseCore
+
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    FirebaseApp.configure()
+
+    return true
+  }
+}
 
 /// The structure of the Happy Beam app: a main window and a Full Space for gameplay.
 @main
 struct HappyBeamApp: App {
     @State private var gameModel = GameModel()
     @State private var immersionState: ImmersionStyle = .mixed
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     var body: some SwiftUI.Scene {
         WindowGroup("HappyBeam", id: "happyBeamApp") {
