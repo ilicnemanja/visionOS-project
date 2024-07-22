@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyA7Sp5UO-LINWAIvp6A7qhVt2Py3BWzo5M</string>
+	<key>GCM_SENDER_ID</key>
+	<string>261795921568</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.apple-samplecode.happybeam6G74ZZ995L</string>
+	<key>PROJECT_ID</key>
+	<string>visonos-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>visonos-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:261795921568:ios:3b99daf7c78a508451d3c5</string>
+	<key>DATABASE_URL</key>
+	<string>https://visonos-app-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
