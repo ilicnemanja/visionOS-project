@@ -10,7 +10,7 @@ import SwiftUI
 struct SoloPlay: View {
     @Environment(GameModel.self) var gameModel
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
-    
+
     var body: some View {
         HStack(alignment: .top) {
             VStack(spacing: 0) {
@@ -23,83 +23,90 @@ struct SoloPlay: View {
                         gameModel.reset()
                     } label: {
                         Label("Back", systemImage: "chevron.backward")
-                            .labelStyle(.iconOnly)
+                                .labelStyle(.iconOnly)
                     }
-                    .offset(x: -23)
+                            .offset(x: -23)
                     Text(verbatim: "\(String(format: "%02d", gameModel.score))")
-                        .font(.system(size: 60))
-                        .bold()
-                        .accessibilityLabel(Text("Score",
+                            .font(.system(size: 60))
+                            .bold()
+                            .accessibilityLabel(Text("Score",
                                     comment: "For accessibility: A string that indicates this number is the player's current score in the game."))
-                        .accessibilityValue(Text(verbatim: "\(gameModel.score)"))
-                    .padding(.leading, 0)
-                    .padding(.trailing, 60)
+                            .accessibilityValue(Text(verbatim: "\(gameModel.score)"))
+                            .padding(.leading, 0)
+                            .padding(.trailing, 60)
                 }
                 Text("score", comment: "A string that indicates the number immediately above is the player's current score in the game.")
-                    .font(.system(size: 30))
-                    .bold()
-                    .accessibilityHidden(true)
-                    .offset(y: -5)
+                        .font(.system(size: 30))
+                        .bold()
+                        .accessibilityHidden(true)
+                        .offset(y: -5)
                 HStack {
                     Button {
                         gameModel.isMuted.toggle()
                     } label: {
                         Label(
-                            gameModel.isMuted
-                            ? String(localized: "Play music", comment: "Button to play music")
-                            : String(localized: "Stop music", comment: "Button to stop music"),
-                            systemImage: gameModel.isMuted ? "speaker.slash.fill" : "speaker.wave.3.fill"
+                                gameModel.isMuted
+                                        ? String(localized: "Play music", comment: "Button to play music")
+                                        : String(localized: "Stop music", comment: "Button to stop music"),
+                                systemImage: gameModel.isMuted ? "speaker.slash.fill" : "speaker.wave.3.fill"
                         )
-                            .labelStyle(.iconOnly)
+                                .labelStyle(.iconOnly)
                     }
-                    .padding(.leading, 12)
-                    .padding(.trailing, 10)
+                            .padding(.leading, 12)
+                            .padding(.trailing, 10)
                     ProgressView(value: (progress > 1.0 || progress < 0.0) ? 1.0 : progress)
-                        .contentShape(.accessibility, Capsule().offset(y: -3))
-                        .accessibilityLabel(Text(verbatim: ""))
-                        .accessibilityValue(Text("\(gameModel.timeLeft) seconds remaining"))
-                        .tint(Color(uiColor: UIColor(red: 242 / 255, green: 68 / 255, blue: 206 / 255, alpha: 1.0)))
-                        .padding(.vertical, 30)
+                            .contentShape(.accessibility, Capsule().offset(y: -3))
+                            .accessibilityLabel(Text(verbatim: ""))
+                            .accessibilityValue(Text("\(gameModel.timeLeft) seconds remaining"))
+                            .tint(Color(uiColor: UIColor(red: 242 / 255, green: 68 / 255, blue: 206 / 255, alpha: 1.0)))
+                            .padding(.vertical, 30)
+                            .overlay(
+                                    Text("Level \(gameModel.level)")
+                                            .font(.system(size: 20))
+                                            .bold()
+                                            .foregroundColor(.white)
+                                            .offset(y: 15)
+                            )
                     Button {
                         gameModel.isPaused.toggle()
                         gameModel.isMuted.toggle()
                     } label: {
                         if gameModel.isPaused {
                             Label(String(localized: "Play", comment: "Button to play the game"), systemImage: "play.fill")
-                                .labelStyle(.iconOnly)
+                                    .labelStyle(.iconOnly)
                         } else {
                             Label(String(localized: "Pause", comment: "Button to pause the game"), systemImage: "pause.fill")
                                 .labelStyle(.iconOnly)
                         }
                     }
-                    .padding(.trailing, 12)
-                    .padding(.leading, 10)
+                            .padding(.trailing, 12)
+                            .padding(.leading, 10)
                 }
-                .background(
-                    .regularMaterial,
-                    in: .rect(
-                        topLeadingRadius: 0,
-                        bottomLeadingRadius: 12,
-                        bottomTrailingRadius: 12,
-                        topTrailingRadius: 0,
-                        style: .continuous
-                    )
-                )
-                .frame(width: 260, height: 70)
-                .offset(y: 15)
+                        .background(
+                                .regularMaterial,
+                                in: .rect(
+                                        topLeadingRadius: 0,
+                                        bottomLeadingRadius: 12,
+                                        bottomTrailingRadius: 12,
+                                        topTrailingRadius: 0,
+                                        style: .continuous
+                                )
+                        )
+                        .frame(width: 260, height: 70)
+                        .offset(y: 15)
             }
-            .padding(.vertical, 12)
+                    .padding(.vertical, 12)
         }
-        .frame(width: 260)
-        .task {
-            do {
-                if moneyGun != nil {
-                    try await addFloorBeamMaterials()
+                .frame(width: 260)
+                .task {
+                    do {
+                        if moneyGun != nil {
+                            try await addFloorBeamMaterials()
+                        }
+                    } catch {
+                        print(error)
+                    }
                 }
-            } catch {
-                print(error)
-            }
-        }
     }
 }
 

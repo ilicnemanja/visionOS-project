@@ -28,28 +28,28 @@ class GameModel {
                 
                 for child in spaceOrigin.children {
                     if child.name.contains("CCloud") {
-                        let start = Point3D(child.position)
-                        let end = Point3D(
-                            start.vector + .init(
-                                x: BallSpawnParameters.deltaX,
-                                y: BallSpawnParameters.deltaY,
-                                z: BallSpawnParameters.deltaZ
-                            )
-                        )
-                        
-                        let line = FromToByAnimation<Transform>(
-                            name: "line",
-                            from: .init(scale: .init(repeating: 1), translation: simd_float(start.vector)),
-                            to: .init(scale: .init(repeating: 1), translation: simd_float(end.vector)),
-                            duration: BallSpawnParameters.speed,
-                            bindTarget: .transform
-                        )
-                        
-                        let animation = try! AnimationResource
-                            .generate(with: line)
-                        
-                        child.playAnimation(animation, transitionDuration: 0.0, startsPaused: false)
-                        child.playAnimation(child.availableAnimations[0])
+//                        let start = Point3D(child.position)
+//                        let end = Point3D(
+//                            start.vector + .init(
+//                                x: BallSpawnParameters.deltaX,
+//                                y: BallSpawnParameters.deltaY,
+//                                z: BallSpawnParameters.deltaZ
+//                            )
+//                        )
+//                        
+//                        let line = FromToByAnimation<Transform>(
+//                            name: "line",
+//                            from: .init(scale: .init(repeating: 1), translation: simd_float(start.vector)),
+//                            to: .init(scale: .init(repeating: 1), translation: simd_float(end.vector)),
+//                            duration: BallSpawnParameters.speed / 10.0,
+//                            bindTarget: .transform
+//                        )
+//                        
+//                        let animation = try! AnimationResource
+//                            .generate(with: line)
+//                        
+                        //child.playAnimation(animation, transitionDuration: 0.0, startsPaused: false)
+                        //child.playAnimation(child.availableAnimations[0])
                     }
                 }
             }
@@ -145,6 +145,7 @@ class GameModel {
         isCountDownReady = false
         countDown = 3
         score = 0
+        level = 1
         isInputSelected = false
         inputKind = .hands
         players = initialPlayers
@@ -167,7 +168,38 @@ class GameModel {
         
         clear()
     }
-    
+
+    func resetForNextLevel() {
+        isPlaying = false
+        isPaused = false
+        isSoloReady = false
+        timeLeft = GameModel.gameTime
+        isCountDownReady = false
+        countDown = 3
+        players = initialPlayers
+
+        #if targetEnvironment(simulator)
+        Player.localName = players.first!.name
+        #endif
+
+        balls = (0..<30).map { Ball(id: $0, isHappy: false) }
+        cloudNumber = 0
+        hitCounts = [:]
+        ballIsHit = [:]
+        ballEntities = []
+        isUsingControllerInput = false
+        controllerX = 0
+        controllerY = 90.0
+
+        clear()
+    }
+
+    var level = 1 {
+        didSet {
+            BallSpawnParameters.updateSpeed(for: level)
+        }
+    }
+
     /// Preload assets when the app launches to avoid pop-in during the game.
     init() {
         Task { @MainActor in
@@ -253,7 +285,7 @@ class GameModel {
 //            cloudAnimations[.smile] = try .generate(with: AnimationView(source: def, trimStart: 7.5, trimEnd: 10.0))
 //            cloudAnimations[.happyBlink] = try .generate(with: AnimationView(source: def, trimStart: 10.0, trimEnd: 15.0))
 
-            generateBallMovementAnimations()
+//            generateBallMovementAnimations()
             
             self.readyToStart = true
         }
@@ -274,38 +306,10 @@ class GameModel {
 
         template.scale *= scaleCoefficient
     }
-    
-    /// Preload animation assets.
-    func generateBallMovementAnimations() {
-        for index in (0..<ballPaths.count) {
-            let start = Point3D(
-                x: ballPaths[index].0,
-                y: ballPaths[index].1,
-                z: ballPaths[index].2
-            )
-            let end = Point3D(
-                x: start.x + BallSpawnParameters.deltaX,
-                y: start.y + BallSpawnParameters.deltaY,
-                z: start.z + BallSpawnParameters.deltaZ
-            )
-            
-            let startRotation = simd_quatf(angle: 0, axis: SIMD3<Float>(0, 1.0, 0))
-            let endRotation = simd_quatf(angle: .pi, axis: SIMD3<Float>(0, 1.0, 0))
-            
-            let speed = BallSpawnParameters.speed
-            
-            let line = FromToByAnimation<Transform>(
-                name: "line",
-                from: .init(scale: .init(repeating: 0.005), rotation: startRotation, translation: simd_float(start.vector)),
-                to: .init(scale: .init(repeating: 0.005), rotation: endRotation, translation: simd_float(end.vector)),
-                duration: speed,
-                bindTarget: .transform
-            )
-            
-            let animation = try! AnimationResource
-                .generate(with: line)
-            
-            ballMovementAnimations.append(animation)
+
+    func nextLevel() {
+        if level < 5 {
+            level += 1
         }
     }
 }

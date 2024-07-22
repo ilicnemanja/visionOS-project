@@ -56,9 +56,6 @@ func spawnBall() async throws -> Entity {
     return ball
 }
 
-/// Storage for each of the linear cloud movement animations.
-var ballMovementAnimations: [AnimationResource] = []
-
 /// Randomly selects a template for spawning.
 func getRandomTemplate() -> Entity? {
     let templates = [basketballBallTemplate, nflBallTemplate, soccerBallTemplate, baseballBallTemplate]
@@ -66,8 +63,6 @@ func getRandomTemplate() -> Entity? {
 }
 
 func doesIntersect(newEntity: Entity, start: Point3D) -> Bool {
-    return false
-
     let newEntityBounds = newEntity.visualBounds(relativeTo: nil)
     let newEntityMin = newEntityBounds.center - newEntityBounds.extents / 2
     let newEntityMax = newEntityBounds.center + newEntityBounds.extents / 2
@@ -129,7 +124,7 @@ func spawnBallExact(start: Point3D, end: Point3D, speed: Double) async throws ->
     accessibilityComponent.systemActions = [.activate]
     ball.components[AccessibilityComponent.self] = accessibilityComponent
 
-    let animation = ballMovementAnimations[ballPathsIndex]
+    let animation = generateBallMovementAnimation(index: ballPathsIndex, duration: speed)
 
     ball.playAnimation(animation, transitionDuration: speed, startsPaused: false)
     ball.setMaterialParameterValues(parameter: "saturation", value: .float(0.0))
@@ -239,13 +234,46 @@ func postCloudOverviewAnnouncement(gameModel: GameModel) {
     AccessibilityNotification.Announcement(cloudPositioningAnnouncement).post()
 }
 
+/// Preload animation assets.
+func generateBallMovementAnimation(index: Int, duration: Double) -> AnimationResource {
+    let start = Point3D(
+        x: ballPaths[index].0,
+        y: ballPaths[index].1,
+        z: ballPaths[index].2
+    )
+    let end = Point3D(
+        x: start.x + BallSpawnParameters.deltaX,
+        y: start.y + BallSpawnParameters.deltaY,
+        z: start.z + BallSpawnParameters.deltaZ
+    )
+    
+    let startRotation = simd_quatf(angle: 0, axis: SIMD3<Float>(0, 1.0, 0))
+    let endRotation = simd_quatf(angle: .pi, axis: SIMD3<Float>(0, 1.0, 0))
+        
+    let line = FromToByAnimation<Transform>(
+        name: "line",
+        from: .init(scale: .init(repeating: 0.005), rotation: startRotation, translation: simd_float(start.vector)),
+        to: .init(scale: .init(repeating: 0.005), rotation: endRotation, translation: simd_float(end.vector)),
+        duration: duration,
+        bindTarget: .transform
+    )
+    
+    return try! AnimationResource
+        .generate(with: line)
+}
+
 /// Cloud spawn parameters (in meters).
 struct BallSpawnParameters {
     static var deltaX = 0.02
     static var deltaY = -0.12
     static var deltaZ = 12.0
-    
-    static var speed = 11.73
+
+    static var baseSpeed = 11.73
+    static var speed = baseSpeed
+
+    static func updateSpeed(for level: Int) {
+        speed = baseSpeed / Double(level)
+    }
 }
 
 /// A counter that advances to the next cloud path.

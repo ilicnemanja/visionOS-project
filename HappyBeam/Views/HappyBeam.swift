@@ -48,11 +48,14 @@ struct HappyBeam: View {
         
         .onReceive(timer) { _ in
             if (
-                gameModel.isPlaying && gameModel.isSoloReady) || (gameModel.isSharePlaying &&
-                gameModel.players.count > 1 && gameModel.players.allSatisfy({ $0.isReady })
+                       gameModel.isPlaying && gameModel.isSoloReady) || (gameModel.isSharePlaying &&
+                    gameModel.players.count > 1 && gameModel.players.allSatisfy({ $0.isReady })
             ) {
                 if gameModel.timeLeft > 0 && !gameModel.isPaused {
                     gameModel.timeLeft -= 1
+                    if gameModel.timeLeft % (GameModel.gameTime / 5) == 0 {
+                        gameModel.nextLevel()
+                    }
                     if (gameModel.timeLeft % 5 == 0 || gameModel.timeLeft == GameModel.gameTime - 1) && gameModel.timeLeft > 4 {
                         Task { @MainActor () -> Void in
                             do {
@@ -61,12 +64,11 @@ struct HappyBeam: View {
                                     _ = try await spawnBall()
                                     try await Task.sleep(for: .milliseconds(300))
                                 }
-                                
+
                                 postCloudOverviewAnnouncement(gameModel: gameModel)
                             } catch {
                                 print("Error spawning a cloud:", error)
                             }
-                            
                         }
                     }
                 } else if gameModel.timeLeft == 0 {
@@ -75,7 +77,7 @@ struct HappyBeam: View {
                     gameModel.timeLeft = -1
                 }
             }
-            
+
             if gameModel.isCountDownReady && gameModel.countDown > 0 {
                 var attrStr = AttributedString("\(gameModel.countDown)")
                 attrStr.accessibilitySpeechAnnouncementPriority = .high
