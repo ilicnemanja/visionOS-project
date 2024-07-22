@@ -1465,6 +1465,9 @@
     "Level %lld" : {
 
     },
+    "Level %lld Complete!" : {
+      "comment" : "Praise for the player."
+    },
     "Loading assets…" : {
       "localizations" : {
         "de" : {
@@ -1536,6 +1539,9 @@
           }
         }
       }
+    },
+    "Next Level" : {
+
     },
     "Nickname" : {
 
@@ -1892,6 +1898,9 @@
         }
       }
     },
+    "Start Over" : {
+
+    },
     "Stop music" : {
       "comment" : "Button to stop music",
       "localizations" : {
@@ -2043,7 +2052,7 @@
       }
     },
     "You collected a total of %lld balls!" : {
-      "comment" : "This text describes the results of the players efforts in the game."
+      "comment" : "This text describes the results of the player's efforts in the game.\nThis text describes the results of the players efforts in the game."
     },
     "You won!" : {
       "comment" : "This is an indication that the player has won the game.",

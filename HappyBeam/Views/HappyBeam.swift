@@ -30,6 +30,15 @@ struct HappyBeam: View {
                     SoloPlay()
                 case .lobby:
                     Lobby()
+                case .levelCompleted:
+                    LevelCompletion(
+                            onNextLevel: {
+                                gameModel.nextLevel()
+                            },
+                            onStartOver: {
+                                gameModel.reset()
+                            }
+                    )
                 case .soloScore:
                     SoloScore()
                 case .multiPlay:
@@ -53,9 +62,6 @@ struct HappyBeam: View {
             ) {
                 if gameModel.timeLeft > 0 && !gameModel.isPaused {
                     gameModel.timeLeft -= 1
-                    if gameModel.timeLeft % (GameModel.gameTime / 5) == 0 {
-                        gameModel.nextLevel()
-                    }
                     if (gameModel.timeLeft % 5 == 0 || gameModel.timeLeft == GameModel.gameTime - 1) && gameModel.timeLeft > 4 {
                         Task { @MainActor () -> Void in
                             do {
@@ -73,7 +79,7 @@ struct HappyBeam: View {
                     }
                 } else if gameModel.timeLeft == 0 {
                     print("Game finished.")
-                    gameModel.isFinished = true
+                    gameModel.finishLevel()
                     gameModel.timeLeft = -1
                 }
             }
@@ -89,6 +95,21 @@ struct HappyBeam: View {
                     await openImmersiveSpace(id: "happyBeam")
                 }
                 gameModel.countDown = -1
+//
+//                // Ensure the game starts after the countdown
+//                Task { @MainActor () -> Void in
+//                    do {
+//                        let spawnAmount = 3
+//                        for _ in (0..<spawnAmount) {
+//                            _ = try await spawnBall()
+//                            try await Task.sleep(for: .milliseconds(300))
+//                        }
+//
+//                        postCloudOverviewAnnouncement(gameModel: gameModel)
+//                    } catch {
+//                        print("Error spawning a cloud:", error)
+//                    }
+//                }
             }
         }
         .task {
@@ -244,6 +265,8 @@ enum GameScreen {
             if !state.isFinished {
                 if !state.isSoloReady {
                     return .lobby
+                } else if state.isLevelCompleted {
+                    return .levelCompleted
                 } else {
                     return .soloPlay
                 }
@@ -260,12 +283,13 @@ enum GameScreen {
                 return .multiScore
             }
         }
-        
+
         return .start
     }
     
     case start
     case soloPlay
+    case levelCompleted
     case soloScore
     case lobby
     case multiPlay

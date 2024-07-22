@@ -16,6 +16,7 @@
 		307CA2272C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 307CA2262C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz */; };
 		307CA22F2C3BE07200DCDDD2 /* Supreme_Money_Gun.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 307CA22E2C3BE07200DCDDD2 /* Supreme_Money_Gun.usdz */; };
 		307CA2312C3D196900DCDDD2 /* gun.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 307CA2302C3D196900DCDDD2 /* gun.usdz */; };
+		30BC698A2C4E688E0024A9D0 /* LevelCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30BC69892C4E68820024A9D0 /* LevelCompletion.swift */; };
 		321A0C13291C02B80042A987 /* HappyBeamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321A0C12291C02B80042A987 /* HappyBeamApp.swift */; };
 		321A0C19291C02B90042A987 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 321A0C18291C02B90042A987 /* Assets.xcassets */; };
 		321A0C1C291C02B90042A987 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 321A0C1B291C02B90042A987 /* Preview Assets.xcassets */; };
@@ -65,6 +66,7 @@
 		307CA2262C37B66100DCDDD2 /* Worn_Baseball_Ball.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Worn_Baseball_Ball.usdz; sourceTree = "<group>"; };
 		307CA22E2C3BE07200DCDDD2 /* Supreme_Money_Gun.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = Supreme_Money_Gun.usdz; sourceTree = "<group>"; };
 		307CA2302C3D196900DCDDD2 /* gun.usdz */ = {isa = PBXFileReference; lastKnownFileType = file; path = gun.usdz; sourceTree = "<group>"; };
+		30BC69892C4E68820024A9D0 /* LevelCompletion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCompletion.swift; sourceTree = "<group>"; };
 		321A0C0B291C02B80042A987 /* HappyBeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HappyBeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		321A0C12291C02B80042A987 /* HappyBeamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HappyBeamApp.swift; sourceTree = "<group>"; };
 		321A0C18291C02B90042A987 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -104,7 +106,7 @@
 		D232C2C12C4A9BB800D06762 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		D276FF7E2C32A5AB003727BB /* happyBeamMenu.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = happyBeamMenu.m4a; sourceTree = "<group>"; };
 		D2A5DD6D2C49546A008F00AE /* LeaderboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardService.swift; sourceTree = "<group>"; };
-		D2E0C1402C4A851500326A17 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D2E0C1402C4A851500326A17 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +201,7 @@
 		324F3043298AC8B900200F22 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				30BC69892C4E68820024A9D0 /* LevelCompletion.swift */,
 				32372A622991920F00F10755 /* HappyBeam.swift */,
 				324F3044298ACB0B00200F22 /* Start.swift */,
 				324F3046298AE68600200F22 /* SoloPlay.swift */,
@@ -380,6 +383,7 @@
 				324F3045298ACB0B00200F22 /* Start.swift in Sources */,
 				32372A632991920F00F10755 /* HappyBeam.swift in Sources */,
 				32BD3B68299C26E6005798DF /* GlobalEntities.swift in Sources */,
+				30BC698A2C4E688E0024A9D0 /* LevelCompletion.swift in Sources */,
 				321C576829788A1900DBBE9E /* GameModel.swift in Sources */,
 				D232C2C02C4A9B6C00D06762 /* LeaderboardTable.swift in Sources */,
 				32791FB12A30CF24000290A2 /* BeamCollisions.swift in Sources */,

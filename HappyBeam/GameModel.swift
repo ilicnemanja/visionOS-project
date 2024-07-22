@@ -67,20 +67,6 @@ class GameModel {
     var isSharePlaying = false
     var isSpatial = false
     
-    var isFinished = false {
-        didSet {
-            if isFinished == true {
-                clear()
-                gameplayPlayer.pause()
-                
-                victoryPlayer.numberOfLoops = -1
-                victoryPlayer.volume = 0.6
-                victoryPlayer.currentTime = 0
-                victoryPlayer.play()
-            }
-        }
-    }
-    
     var isSoloReady = false {
         didSet {
             if isPlaying == true {
@@ -149,11 +135,11 @@ class GameModel {
         isInputSelected = false
         inputKind = .hands
         players = initialPlayers
-        
+
         #if targetEnvironment(simulator)
         Player.localName = players.first!.name
         #endif
-        
+
         balls = (0..<30).map { Ball(id: $0, isHappy: false) }
         cloudNumber = 0
         hitCounts = [:]
@@ -162,21 +148,22 @@ class GameModel {
         isUsingControllerInput = false
         controllerX = 0
         controllerY = 90.0
-        
+
         victoryPlayer.pause()
         gameplayPlayer.pause()
-        
+
         clear()
     }
 
     func resetForNextLevel() {
-        isPlaying = false
+        isPlaying = true
         isPaused = false
         isSoloReady = false
         timeLeft = GameModel.gameTime
-        isCountDownReady = false
+        isCountDownReady = true
         countDown = 3
         players = initialPlayers
+        isLevelCompleted = false
 
         #if targetEnvironment(simulator)
         Player.localName = players.first!.name
@@ -192,6 +179,16 @@ class GameModel {
         controllerY = 90.0
 
         clear()
+    }
+
+    func nextLevel() {
+        if level < 5 {
+            level += 1
+            resetForNextLevel()
+        } else {
+            isFinished = true
+            isLevelCompleted = false
+        }
     }
 
     var level = 1 {
@@ -307,11 +304,29 @@ class GameModel {
         template.scale *= scaleCoefficient
     }
 
-    func nextLevel() {
-        if level < 5 {
-            level += 1
+    func finishLevel() {
+        if level >= 5 {
+            isFinished = true
+        } else {
+            isLevelCompleted = true
         }
     }
+
+    var isLevelCompleted = false
+
+    var isFinished = false {
+       didSet {
+           if isFinished == true && level == 5 {
+               clear()
+               gameplayPlayer.pause()
+               
+               victoryPlayer.numberOfLoops = -1
+               victoryPlayer.volume = 0.6
+               victoryPlayer.currentTime = 0
+               victoryPlayer.play()
+           }
+       }
+   }
 }
 
 /// The kinds of input selections offered to players.
